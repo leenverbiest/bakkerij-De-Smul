@@ -8,14 +8,15 @@
 class PagesController extends Controller
 {
     public function index(){
-        echo 'Hier komt de paginalijst';
+        $this->data['test_content']= 'Testpagina';
     }
-    public function view(){
+    public function home(){
         $params=App::getRouter()->getParams();
 
         if (isset($params[0])){
             $alias=strtolower($params[0]);
-            echo "Hier komt een pagina met '{$alias}' alias";
+           $this->data['content']= "Hier komt een pagina met '{$alias}' alias";
+
         }
     }
 }

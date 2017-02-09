@@ -11,7 +11,7 @@ Config::set('languages',array('nl','en'));
 //Routes. Route name=>method prefix
 Config::set('routes',array(
    'default'=>'',
-    'admin'=>'admin_',
+    'admin'=>'admin_'
 ));
 Config::set('default_route','default');
 Config::set('default_language','nl');

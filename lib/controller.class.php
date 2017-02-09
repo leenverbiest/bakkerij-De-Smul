@@ -15,9 +15,9 @@ class Controller
      * Controller constructor.
      * @param $data
      */
-    public function __construct($data=array())
+    public function __construct($aTwig=array())
     {
-        $this->data = $data;
+        $this->aTwig = $aTwig;
         $this->params=App::getRouter()->getParams();
     }
 
