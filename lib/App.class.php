@@ -5,7 +5,8 @@
  * Date: 6/02/2017
  * Time: 15:22
  */
-require_once ('twig.class.php');
+
+
 class App
 {
     protected static $router;
@@ -27,26 +28,17 @@ class App
         //Calling controller's method
         $controller_object=new $controller_class(); //object van de controller
         if(method_exists($controller_object,$controller_method)){
-            //Controller's action may return a view path
-            $view_path=$controller_object->$controller_method();
+            //als de methode bestaat in de controller
+            $view_path=$controller_object->$controller_method(); //de methode (actie)
             $view_object=new View($controller_object->getData(),$view_path);
-
-            $content=$view_object->render();
+            print_r($view_object);
+            $twig_name=$view_object->getPath();
+           $data=$view_object->getData();
+           $view_object->render($twig_name,$data);
 
         }else {
             throw new Exception('Method '.$controller_method.' of class '.$controller_class.'bestaat niet');
         }
 
-        $layout=self::$router->getRoute(); //de route
-
-        $layout_path=VIEWS_PATH.DS.$layout.'.twig';
-
-        $layout_view_object=new View(compact('content'),$layout_path);
-        print_r($layout_view_object);
-    //    $layout_view_object=new View(compact('inhoud'),$layout_path);
-
-        echo $layout_view_object->render();
-
     }
-
 }

@@ -7,15 +7,20 @@
  */
 class PagesController extends Controller
 {
-    public function index(){
-        $this->data['test_content']= 'Testpagina';
+    public function index()
+    {
+        $params = App::getRouter()->getParams();
+
+        if (isset($params[0])) {
+            $this->data['klantnr'] = '34';
+        }
     }
     public function home(){
         $params=App::getRouter()->getParams();
 
         if (isset($params[0])){
-            $alias=strtolower($params[0]);
-           $this->data['content']= "Hier komt een pagina met '{$alias}' alias";
+//            $alias=strtolower($params[0]);
+           $this->data['klant']= "Leen Verbiest";
 
         }
     }
