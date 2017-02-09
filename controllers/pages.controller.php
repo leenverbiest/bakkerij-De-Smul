@@ -12,16 +12,28 @@ class PagesController extends Controller
         $params = App::getRouter()->getParams();
 
         if (isset($params[0])) {
-            $this->data['klantnr'] = '34';
+            $this->data['bedrijf'] = 'Bakkerij De Smul';
         }
     }
-    public function home(){
+    public function home()
+    {
+        $params = App::getRouter()->getParams();
+
+        if (isset($params[0])) {
+            $this->data['klant'] = "Leen Verbiest";
+        }
+    }
+    public function login()
+    {
         $params=App::getRouter()->getParams();
-
-        if (isset($params[0])){
-//            $alias=strtolower($params[0]);
-           $this->data['klant']= "Leen Verbiest";
-
-        }
+//        if (isset($params[0])){
+//            $this->data['session']
+//        }
     }
+    public function registreer()
+    {
+        $params=App::getRouter()->getParams();
+    }
+
+
 }
