@@ -1,0 +1,52 @@
+{% extends 'basis.twig' %}
+
+{% block content %}
+{% block hero %}
+    {{ parent() }}
+ {% endblock hero %}
+    <main>
+        <div class="wrapper row">
+            {# linkerkolom met login-form #}
+            <div class="small-12 medium-6 column left">
+                <form action="" method="post">
+                    <div class="row">
+                        <div class="medium-12 column">
+                            <h4>Inloggen</h4>
+                        </div>
+                        <div class="medium-9 column">
+                            <label>E-mailadres:
+                                <input type="text" name="email" value="{{ email }}">
+                            </label>
+                        </div>
+                        <!--test uit
+                        <div class="medium-3 column">
+
+                            <span class="error">*{{ foutEmail}}</span>
+
+                        </div>
+                        test uit-->
+                        <div class="medium-12 column">
+                            <label>Paswoord:
+                                <input type="text" name="wachtwoord" value="{{ wachtwoord }}">
+                            </label>
+                        </div>
+                        <div class="medium-12 column">
+                            <button class="button" type="submit" name="inloggen">Inloggen</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            {# rechterkolom met registreer-form #}
+            <div class="small-12 medium-6 column right">
+
+                <div class="medium-12 column">
+                <h4>Bestel je voor het eerst?</h4>
+                </div>
+                    <div class="medium-12 column">
+                    <button class="button registreer" type="button"><a href="/klant/registreer/">Registreer u als nieuwe klant</a></button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+{% endblock content %}

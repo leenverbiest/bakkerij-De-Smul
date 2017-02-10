@@ -1,0 +1,12 @@
+{% extends 'basis.twig' %}
+
+{% block body %}
+    <p>U bent succesvol geregistreerd!</p>
+    <p>
+        Uw wachtwoord is {{ wachtwoord }}.<br>
+        Dit wachtwoord schrijft u best ergens neer want u kunt u enkel aanmelden.
+        met uw emailadres en dit wachtwoord.
+    </p>
+    <button type="button" class="success button"><a href="aangemeld.php?klantnr={{ klant.klantnr }}">Naar uw accountpagina</a></button>
+
+{% endblock body %}

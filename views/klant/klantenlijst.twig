@@ -1,0 +1,34 @@
+{% extends 'basis.twig' %}
+
+
+{% block header %}
+    <h1>Klantenlijst</h1>
+{% endblock header %}
+
+{% block body %}
+
+    <table>
+        <tr>
+            <th>Klantnr</th>
+            <th>Voornaam</th>
+            <th>Naam</th>
+            <th>Straat</th>
+            <th>Postcode en Gemeente</th>
+            <th>Email</th>
+            <th>Wachtwoord</th>
+        </tr>
+        {% for klant in klanten %}
+            <tr>
+                <td>{{ klant.klantnr }}</td>
+                <td>{{ klant.voornaam }}</td>
+                <td>{{ klant.naam }}</td>
+                <td>{{ klant.straat }}</td>
+                <td>{{ klant.postcodegemeente }}</td>
+                <td>{{ klant.email }}</td>
+                <td>{{ klant.wachtwoord }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+
+{% endblock %}

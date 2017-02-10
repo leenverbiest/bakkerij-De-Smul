@@ -1,0 +1,109 @@
+
+{% extends 'basis.twig' %}
+
+
+
+{% block content %}
+
+    <main>
+    {% if wachtwoord %}
+        <p>U bent succesvol geregistreerd!</p>
+        <p>
+            Uw wachtwoord is {{ wachtwoord }}.<br>
+            Dit wachtwoord schrijft u best ergens neer want u kunt u enkel aanmelden.
+            met uw emailadres en dit wachtwoord.
+        </p>
+        <button type="button" class="success button"><a href="../../index.php">Naar uw accountpagina</a></button>
+
+
+
+    {% else %}
+    <form method="post" action="../../index.php">
+    <div class="row">
+        <div class="small-12 columns">
+            <span class="verplicht error">* Verplichte velden</span>
+    </div>
+    </div>
+    <div class="row">
+        <div class="small-3 columns">
+            <label for="middle-label" class="text-right middle">Voornaam</label>
+        </div>
+        <div class="small-7 columns">
+            <input type="text" id="middle-label" placeholder="Voornaam" name="voornaam" value="{{ voornaam }}">
+        </div>
+        <div class="small-2 columns">
+            <span class="error">*{{ foutVoornaam }}</span>
+
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="small-3 columns">
+            <label for="middle-label" class="text-right middle">Naam</label>
+        </div>
+        <div class="small-7 columns">
+            <input type="text" id="middle-label" placeholder="naam" name="naam" value="{{ naam }}">
+        </div>
+        <div class="small-2 columns">
+            <span class="error">*{{ foutNaam }}</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-3 columns">
+            <label for="middle-label" class="text-right middle">Straat en huisnummer</label>
+        </div>
+        <div class="small-7 columns">
+            <input type="text" id="middle-label" placeholder="straat en huisnummer" name="straat" value="{{ straat }}">
+        </div>
+        <div class="small-2 columns">
+            <span class="error">*{{ foutStraat }}</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-3 columns">
+            <label for="middle-label" class="text-right middle">Postcode</label>
+        </div>
+        <div class="small-7 columns">
+            <input type="text" id="middle-label" placeholder="postcode" name="postcode"value="{{ postcode }}">
+        </div>
+        <div class="small-2 columns">
+            <span class="error">*{{ foutPostcode}}</span>
+        </div>
+    </div>
+        <div class="row">
+            <div class="small-3 columns">
+                <label for="middle-label" class="text-right middle">Gemeente</label>
+            </div>
+            <div class="small-7 columns">
+                <input type="text" id="middle-label" placeholder="gemeente" name="gemeente"value="{{ gemeente }}">
+            </div>
+            <div class="small-2 columns">
+                <span class="error">*{{ foutGemeente}}</span>
+            </div>
+        </div>
+    <div class="row">
+        <div class="small-3 columns">
+            <label for="middle-label" class="text-right middle">Email</label>
+        </div>
+        <div class="small-7 columns">
+            <input type="text" id="middle-label" placeholder="email" name="email"value="{{ email }}">
+        </div>
+        <div class="small-2 columns">
+            <span class="error">*{{ foutEmail}}</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-3 columns">
+
+        </div>
+        <div class="small-9 columns">
+         <button type="submit" class="button text-right middle registreer">Registreer</button>
+
+    
+        </div>
+    </div>
+</form>
+    </main>
+{% endif %}
+{% endblock content %}
+
