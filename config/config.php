@@ -15,5 +15,12 @@ Config::set('routes',array(
 ));
 Config::set('default_route','default');
 Config::set('default_language','nl');
-Config::set('default_controller','pages');
+Config::set('default_controller','klant');
 Config::set('default_action','index');
+
+Config::set('db.connstring','mysql:host=localhost;dbname=bakkerij;charset=utf8');
+Config::set('db.username','leenverbiest');
+Config::set('db.password','vdab1302123');
+
+
+

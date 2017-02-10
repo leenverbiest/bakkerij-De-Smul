@@ -1,12 +1,18 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: cyber10
- * Date: 6/02/2017
- * Time: 15:27
+ * User: Leen
+ * Date: 9/02/2017
+ * Time: 19:53
  */
-class PagesController extends Controller
+class KlantController extends Controller
 {
+    public function __construct($data=array())
+    {
+        parent::__construct($data);
+        $this->model=new \models\KlantDAO();
+    }
+
     public function index()
     {
         $params = App::getRouter()->getParams();
@@ -34,6 +40,12 @@ class PagesController extends Controller
     {
         $params=App::getRouter()->getParams();
     }
-
+    public function klantenlijst()
+    {
+        $params=App::getRouter()->getParams();
+        if (isset($params[0])){
+            $this->data['klanten']=$this->model->getAll();
+        }
+    }
 
 }
