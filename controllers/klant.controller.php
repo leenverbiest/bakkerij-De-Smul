@@ -64,7 +64,7 @@ class KlantController extends Controller
     }
     public function afmelden(){
         Session::destroy();
-        Router::redirect('/klant/');
+        Router::redirect('/klant/login/');
     }
     public function registreer()
     {
