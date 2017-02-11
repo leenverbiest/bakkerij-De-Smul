@@ -7,12 +7,19 @@
  */
 require_once (ROOT.DS.'lib'.DS.'session.class.php');
 require_once (ROOT.DS.'entities'.DS.'Klant.php');
+require_once (ROOT.DS.'entities'.DS.'Validator.php');
+require_once (ROOT.DS.'entities'.DS.'ErrorHandler.php');
+require_once (ROOT.DS.'entities'.DS.'DB.php');
+
+
 class KlantController extends Controller
 {
     public function __construct($data=array())
     {
         parent::__construct($data);
         $this->model=new KlantModel();
+//        $this->entity=new Validator($this->entity=new Errorhandler());
+
     }
 
     public function index()
@@ -40,30 +47,20 @@ class KlantController extends Controller
             $klant = $this->model->getByEmail($_POST['email']);
             $dbwachtwoord =$klant->getWachtwoord();
             $wachtwoord=$_POST['wachtwoord'];
-            print $dbwachtwoord;
-            print($_POST['wachtwoord']);
+            $email=$klant->getEmail();
             $status=$klant->getStatus();
-            $juistewachtwoord=password_verify($_POST['wachtwoord'],$dbwachtwoord);
-            print $juistewachtwoord;
-            if (password_verify($wachtwoord,$dbwachtwoord)){
-                Session::setFlash('Geldig wachtwoord');
+            $juistewachtwoord=password_verify($wachtwoord,$dbwachtwoord);
+           print(var_dump($juistewachtwoord));
+
+            if ($klant && $status && $juistewachtwoord) {
+                Session::set('email',$klant->getEmail());
+                Session::set('voornaam',$klant->getVoornaam());
+                Session::set('naam',$klant->getNaam());
+             Router::redirect('/klant/klantpagina');
             }else{
-                Session::setFlash('Ongeldig wachtwoord');
+                echo 'fout wachtwoord';
             }
-            if (Session::hasFlash()){
-                $this->data['geldig']=Session::flash();
-            }
-
-
-//            if ($klant && $status && $juistewachtwoord) {
-//                Session::set('email',$klant->getEmail());
-//                Session::set('voornaam',$klant->getVoornaam());
-//                Session::set('naam',$klant->getNaam());
-//             Router::redirect('/klant/klantpagina');
-//            }else{
-//                echo 'fout wachtwoord';
-//            }
-//            Router::redirect('/klant/');
+            Router::redirect('/klant/');
         }
     }
     public function afmelden(){
@@ -79,19 +76,64 @@ class KlantController extends Controller
             $postcode=$_POST["postcode"];
             $gemeente = $_POST['gemeente'];
             $email = $_POST['email'];
+            $this->data['voornaam']=$voornaam;
+            $this->data['naam']=$naam;
+            $this->data['straat']=$straat;
+            $this->data['postcode']=$postcode;
+            $this->data['gemeente']=$gemeente;
+            $this->data['email']=$email;
             $status='1';
             $tekens=array_merge(range('A','Z'),range(0,9));
             //wachtwoord genereren
             $wachtwoord='';
             for($i=0;$i<6;$i++){
-                $wachtwoord .=$tekens[rand(0,count($tekens)-1)];
+            $wachtwoord .=$tekens[rand(0,count($tekens)-1)];
             }
-            $klant=$this->model->create($voornaam,$naam,$straat,$postcode,$gemeente,$email,$status,$wachtwoord);
-            $klantnr=$klant->getKlantnr();
-            $klantgegevens=$this->model->getById($klantnr);
-            $this->data['naam']=$klantgegevens->getNaam();
-            Session::set('naam',$klantgegevens->getNaam());
+            $this->data['wachtwoord']=$wachtwoord;
+            //valideer input en pass it to de ValidatorController
+            $errorHandler=new Errorhandler();
+            $validator=new Validator($errorHandler);
+            $validation=$validator->check($_POST,[
+                'voornaam' => [
+                    'verplicht' => true,
+                    'tekst' => true
+                ],
+                'naam' => [
+                    'verplicht' => true,
+                    'tekst' => true
+                ],
+                'straat' => [
+                    'verplicht' => true
+                ],
+                'postcode'=>[
+                    'verplicht'=>true,
+                    'lengte'=>4
+                ],
+                'gemeente' => [
+                    'verplicht' => true,
+                    'gemeente'=>true
+                ],
+                'email' => [
+                    'verplicht' => true,
+                    'email' => true
+                ]
+            ]);
+            if($validation->fails()) {
+                $params=App::getRouter()->getParams();
+                $this->data['foutVoornaam']=$validation->errors()->first('voornaam');
+                $this->data['foutNaam']=$validation->errors()->first('naam');
+                $this->data['foutStraat']=$validation->errors()->first('straat');
+                $this->data['foutPostcode']=$validation->errors()->first('postcode');
+                $this->data['foutGemeente']=$validation->errors()->first('gemeente');
+                $this->data['foutEmail']=$validation->errors()->first('email');
 
+            }else{
+               $klant=$this->model->create($voornaam,$naam,$straat,$postcode,$gemeente,$email,$wachtwoord,$status);
+               $klantnr=$klant->getKlantnr();
+               $klantgegevens=$this->model->getById($klantnr);
+               $this->data['klant']=$klantgegevens;
+               Session::set('klantnr',$klantnr);
+            }
         }
     }
     public function klantpagina(){

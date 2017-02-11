@@ -10,6 +10,8 @@ class Controller
     protected $data;
     protected $model;
     protected $params;
+    protected $entity;
+    protected $controller;
 
     /**
      * Controller constructor.
@@ -44,6 +46,24 @@ class Controller
     {
         return $this->params;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getController()
+    {
+        return $this->controller;
+    }
+
+
 
 
 }

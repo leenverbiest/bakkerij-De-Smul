@@ -5,7 +5,7 @@
  * Date: 9/02/2017
  * Time: 15:52
  */
-class DB
+class DBClass
 {
     protected $connection;
 
@@ -58,5 +58,6 @@ class DB
             echo $e->getMessage();
         }
     }
+
 }
 

@@ -9,6 +9,7 @@
 
 
 include_once (ROOT.DS.'entities'.DS.'Klant.php');
+require_once (ROOT.DS.'entities'.DS.'DB.php');
 
 class KlantModel extends Model
 {
@@ -44,7 +45,7 @@ class KlantModel extends Model
     public function getByEmail($email){
         //haalt de volledig klant op aan de hand van het emailadres
         $sql="select klantnr,voornaam,naam,straat,postcode,gemeente,email,wachtwoord,is_actief from klanten WHERE email=:email";
-        $dbh=$this->db;
+        $dbh=new PDO(DB::$DB_CONNSTRING,DB::$DB_USERNAME,DB::$DB_PASSWORD);
         $stmt=$dbh->prepare($sql);
         $stmt->execute(array(':email'=>$email));
         $rij=$stmt->fetch(\PDO::FETCH_ASSOC);
@@ -91,15 +92,15 @@ class KlantModel extends Model
 
     //CREATE
     //voeg record toe aan de tabel klanten
-    public function create($voornaam,$naam,$straat,$postcode,$gemeente,$email,$wachtwoord)
+    public function create($voornaam,$naam,$straat,$postcode,$gemeente,$email,$wachtwoord,$is_actief)
     {
         //voegt een nieuwe klant toe aan de database
         //returnt een object $klant met de gegevens van de net toegevoegde klant
         $hashedValue=password_hash($wachtwoord,PASSWORD_DEFAULT);
         $wachtwoord=$hashedValue;
-        $sql = "insert into klanten (voornaam,naam,straat,postcode,gemeente,email,wachtwoord)
-                VALUES(:voornaam,:naam,:straat,:postcode,:gemeente,:email,:wachtwoord) ";
-        $dbh=new \PDO(DBCONFIG::$DB_CONNSTRING,DBCONFIG::$DB_USERNAME,DBCONFIG::$DB_PASSWORD);
+        $sql = "insert into klanten (voornaam,naam,straat,postcode,gemeente,email,wachtwoord,is_actief)
+                VALUES(:voornaam,:naam,:straat,:postcode,:gemeente,:email,:wachtwoord,:is_actief) ";
+        $dbh=$dbh=new PDO(DB::$DB_CONNSTRING,DB::$DB_USERNAME,DB::$DB_PASSWORD);
         $stmt = $dbh->prepare($sql);
         $stmt->execute(array(
             ':voornaam' => $voornaam,
@@ -108,11 +109,12 @@ class KlantModel extends Model
             ':postcode' => $postcode,
             ':gemeente'=>$gemeente,
             ':email' => $email,
-            ':wachtwoord' => $wachtwoord
+            ':wachtwoord' => $wachtwoord,
+            ':is_actief'=>$is_actief
         ));
         $klantnr = $dbh->lastInsertId();
         $dbh = null;
-        $klant=Klant::create($klantnr,$voornaam,$naam,$straat,$postcode,$gemeente,$email,$wachtwoord);
+        $klant=Klant::create($klantnr,$voornaam,$naam,$straat,$postcode,$gemeente,$email,$wachtwoord,$is_actief);
         return $klant;  //RETURN OBJECT KLANT
     }
     //UPDATE

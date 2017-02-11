@@ -1,12 +1,12 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: Leen
- * Date: 10/02/2017
- * Time: 18:18
+ * Date: 11/02/2017
+ * Time: 16:47
  */
-
-require_once (ROOT.DS.'models'.DS.'klant.model.php');
+require_once ('ErrorHandler.php');
 class Validator
 {
     protected $errorHandler;
@@ -83,4 +83,29 @@ class Validator
         return !($model->checkEmail($value)); //returnt een boolean
 
     }
+
+    /**
+     * @return Errorhandler
+     */
+    public function getErrorHandler()
+    {
+        return $this->errorHandler;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRules()
+    {
+        return $this->rules;
+    }
+
+    /**
+     * @return array
+     */
+    public function getMessages()
+    {
+        return $this->messages;
+    }
+
 }

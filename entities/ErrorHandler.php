@@ -1,9 +1,10 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: Leen
- * Date: 10/02/2017
- * Time: 19:37
+ * Date: 11/02/2017
+ * Time: 16:46
  */
 class Errorhandler
 {
