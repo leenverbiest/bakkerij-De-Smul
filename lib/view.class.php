@@ -23,7 +23,7 @@ class View{
         $fullPath=VIEWS_PATH.DS.$controller_dir.DS.$twig_name; //f.e. the folder views and subfolder 'controller'
         array_push($arrPathTwig,$twig_name,$fullPath);
         return $arrPathTwig;
-        print_r($arrPathTwig);
+//        print_r($arrPathTwig);
     }
 
 

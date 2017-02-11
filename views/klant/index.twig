@@ -5,6 +5,12 @@
     <link rel="stylesheet" href="../../css/basis.css">
 {% endblock stylesheets %}
 {% block content %}
+    {%  if bericht %}
+    <div class="callout success">
+        <p>{{ bericht }}</p>
+    </div>
+    {% endif %}
+
     {% block hero %}
         <section class="hero">
             <div class="wrapper">

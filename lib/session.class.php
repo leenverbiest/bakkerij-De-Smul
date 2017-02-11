@@ -16,7 +16,10 @@ class Session{
         return !is_null(self::$flash_message);
     }
     public static function flash(){
-        echo self::$flash_message;
+        return self::$flash_message;
+
+    }
+    public static function unFlash(){
         self::$flash_message=null;
     }
     public static function set($key,$value){

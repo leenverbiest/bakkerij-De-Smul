@@ -66,6 +66,10 @@ class Router
         }
     }
 
+    public static function redirect($location){
+        header('Location: '.$location);
+    }
+
     //GETTERS
     /**
      * @return mixed
@@ -122,6 +126,7 @@ class Router
     {
         return $this->language;
     }
+
 
 
 

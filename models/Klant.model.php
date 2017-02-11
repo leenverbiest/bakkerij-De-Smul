@@ -7,26 +7,21 @@
  */
 //models/Klant.model.php
 
-namespace models;
-include_once ('../entities/Klant.php');
-use entities\Klant;
 
+include_once (ROOT.DS.'entities'.DS.'Klant.php');
 
-
-class KlantModel extends \Model
+class KlantModel extends Model
 {
     //READ
     //haal alle klanten uit de database
     //returnt een ARRAY VAN KLANT-OBJECTEN
     public function getAll(){
-        $sql="select klantnr,voornaam,naam,straat,postcode,gemeente,email,wachtwoord from klanten";
-//        $dbh=new \PDO(DBCONFIG::$DB_CONNSTRING,DBCONFIG::$DB_USERNAME,DBCONFIG::$DB_PASSWORD);
-
+        $sql="select klantnr,voornaam,naam,straat,postcode,gemeente,email,wachtwoord,is_actief from klanten";
         $resultSet=$this->db->query($sql);
         $lijst=array();
         foreach ($resultSet as $rij){
             $klant=Klant::create($rij["klantnr"],$rij["voornaam"],$rij["naam"],$rij["straat"],
-                                 $rij["postcode"],$rij["gemeente"],$rij["email"],$rij["wachtwoord"]);
+                                 $rij["postcode"],$rij["gemeente"],$rij["email"],$rij["wachtwoord"],$rij['is_actief']);
             array_push($lijst,$klant);
         }
         $this->db=null;
@@ -45,6 +40,23 @@ class KlantModel extends \Model
         $rij["postcode"],$rij["gemeente"],$rij["email"],$rij["wachtwoord"]);
         $dbh=null;
         return $klant;      //KLANT-OBJECT
+    }
+    public function getByEmail($email){
+        //haalt de volledig klant op aan de hand van het emailadres
+        $sql="select klantnr,voornaam,naam,straat,postcode,gemeente,email,wachtwoord,is_actief from klanten WHERE email=:email";
+        $dbh=$this->db;
+        $stmt=$dbh->prepare($sql);
+        $stmt->execute(array(':email'=>$email));
+        $rij=$stmt->fetch(\PDO::FETCH_ASSOC);
+        $dbh=null;
+        if ($rij){
+            $klant=Klant::create($rij["klantnr"],$rij["voornaam"],$rij["naam"],$rij["straat"],
+                $rij["postcode"],$rij["gemeente"],$email,$rij["wachtwoord"],$rij["is_actief"]);
+            return $klant;      //KLANT-OBJECT
+        }
+        return null;
+
+
     }
          public function getIdByEmail($email){
         /*haalt het klantnr op aan de hand van het emailadres(=gebruikersnaam)
@@ -75,6 +87,7 @@ class KlantModel extends \Model
           return false;
             }
         }
+
 
     //CREATE
     //voeg record toe aan de tabel klanten

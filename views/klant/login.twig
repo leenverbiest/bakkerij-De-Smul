@@ -5,6 +5,13 @@
     {{ parent() }}
  {% endblock hero %}
     <main>
+        {%  if geldig %}
+        <div class="wrapper row">
+            <div class="small-12 medium-6 column left callout success">
+                <p>{{ geldig }}</p>
+            </div>
+        </div>
+        {% endif %}
         <div class="wrapper row">
             {# linkerkolom met login-form #}
             <div class="small-12 medium-6 column left">

@@ -17,7 +17,7 @@ class DB
     {
         try {
             $this->connection = new PDO($conn, $username, $password, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-            echo "Verbonden met database";
+            return $this;
         } catch (PDOException $e) {
             echo 'Kon niet verbinden met de database ' . $e->getMessage();
         }
@@ -31,24 +31,32 @@ class DB
         }
         try {
             $result = $this->connection->query($sql);
-            if ($result) print 'success!';
+            if ($result) return $result;
         } catch (PDOException $e) {
             echo $e->getMessage();
         };
-
-
-        if ($result) {
-            return $result;
+    }
+    public function prepare($sql){
+        if (!$this->connection){
+            return false;
         }
-        $data = array();
-        foreach ($result as $rij) {
-            array_push($lijst, $rij);
-            return $data;
+        try{
+            $result=$this->connection->prepare($sql);
+            if ($result)return $result;
+        }catch (PDOException $e){
+            echo $e->getMessage();
         }
     }
-
-    public function escape($str){
-
+    public function execute($sql){
+        if (!$this->connection){
+            return false;
+        }
+        try{
+            $result=$this->connection->exec($sql);
+            if ($result)return $result;
+        }catch (PDOException $e){
+            echo $e->getMessage();
+        }
     }
-
 }
+

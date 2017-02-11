@@ -7,9 +7,6 @@
  */
 //entities/Klant.php
 
-namespace entities;
-
-
 class Klant
 {
 
@@ -23,11 +20,12 @@ class Klant
     private $gemeente;
     private $email;
     private $wachtwoord;
+    private $is_actief;
 
     /*de constructor function is private zodat er van buiten de klasse Klant
     *geen nieuw Klant-object meer aangemaakt kan worden
      */
-    private function __construct($klantnr, $voornaam, $naam, $straat, $postcode,$gemeente, $email, $wachtwoord)
+    private function __construct($klantnr, $voornaam, $naam, $straat, $postcode,$gemeente, $email, $wachtwoord,$is_actief)
     {
         $this->klantnr = $klantnr;
         $this->voornaam = $voornaam;
@@ -37,12 +35,13 @@ class Klant
         $this->gemeente=$gemeente;
         $this->email = $email;
         $this->wachtwoord = $wachtwoord;
+        $this->is_actief=$is_actief;
     }
     //de aanmaak van een nieuw Klantobject gebeurt door de create functie
     //die eerst controleert of er nog geen Klantobject met dat klantnr bestaat
-    public static function create($klantnr,$voornaam,$naam,$straat,$postcode,$gemeente,$email,$wachtwoord){
+    public static function create($klantnr,$voornaam,$naam,$straat,$postcode,$gemeente,$email,$wachtwoord,$is_actief){
         if(!isset(self::$idMap[$klantnr])){
-            self::$idMap[$klantnr]=new Klant($klantnr,$voornaam,$naam,$straat,$postcode,$gemeente,$email,$wachtwoord);
+            self::$idMap[$klantnr]=new Klant($klantnr,$voornaam,$naam,$straat,$postcode,$gemeente,$email,$wachtwoord,$is_actief);
         }
         return self::$idMap[$klantnr];
     }
@@ -56,6 +55,7 @@ class Klant
     public function getGemeente(){return $this->gemeente;}
     public function getEmail(){return $this->email;}
     public function getWachtwoord(){return $this->wachtwoord;}
+    public function getStatus(){return $this->is_actief;}
 
     //SETTERS (geen voor klantnr want deze is auto_increment
     public function setVoornaam($voornaam){$this->voornaam = $voornaam;}
@@ -65,6 +65,7 @@ class Klant
     public function setGemeente($gemeente){$this->gemeente=$gemeente;}
     public function setEmail($email){$this->email = $email;}
     public function setWachtwoord($wachtwoord){$this->wachtwoord = $wachtwoord;}
+    public function setStatus($is_actief){$this->is_actief=$is_actief;}
 
 
 

@@ -5,6 +5,7 @@
  * Date: 9/02/2017
  * Time: 18:25
  */
+
 class Model {
 
     protected $db;
