@@ -9,7 +9,7 @@ require_once (ROOT.DS.'lib'.DS.'session.class.php');
 require_once (ROOT.DS.'entities'.DS.'Klant.php');
 require_once (ROOT.DS.'entities'.DS.'Validator.php');
 require_once (ROOT.DS.'entities'.DS.'ErrorHandler.php');
-require_once (ROOT.DS.'entities'.DS.'DB.php');
+
 
 
 class KlantController extends Controller
@@ -50,17 +50,16 @@ class KlantController extends Controller
             $email=$klant->getEmail();
             $status=$klant->getStatus();
             $juistewachtwoord=password_verify($wachtwoord,$dbwachtwoord);
-           print(var_dump($juistewachtwoord));
 
-            if ($klant && $status && $juistewachtwoord) {
+            if ($klant && $status==1 && $juistewachtwoord) {
                 Session::set('email',$klant->getEmail());
                 Session::set('voornaam',$klant->getVoornaam());
                 Session::set('naam',$klant->getNaam());
              Router::redirect('/klant/klantpagina');
             }else{
-                echo 'fout wachtwoord';
+                $this->data['fout']='foutief wachtwoord';
             }
-            Router::redirect('/klant/');
+//            Router::redirect('/klant/');
         }
     }
     public function afmelden(){
@@ -83,13 +82,8 @@ class KlantController extends Controller
             $this->data['gemeente']=$gemeente;
             $this->data['email']=$email;
             $status='1';
-            $tekens=array_merge(range('A','Z'),range(0,9));
-            //wachtwoord genereren
-            $wachtwoord='';
-            for($i=0;$i<6;$i++){
-            $wachtwoord .=$tekens[rand(0,count($tekens)-1)];
-            }
-            $this->data['wachtwoord']=$wachtwoord;
+
+//            $this->data['wachtwoord']=$wachtwoord;
             //valideer input en pass it to de ValidatorController
             $errorHandler=new Errorhandler();
             $validator=new Validator($errorHandler);
@@ -128,11 +122,20 @@ class KlantController extends Controller
                 $this->data['foutEmail']=$validation->errors()->first('email');
 
             }else{
+                $tekens=array_merge(range('A','Z'),range(0,9));
+                //wachtwoord genereren
+                $wachtwoord='';
+                for($i=0;$i<6;$i++){
+                    $wachtwoord .=$tekens[rand(0,count($tekens)-1)];
+                }
                $klant=$this->model->create($voornaam,$naam,$straat,$postcode,$gemeente,$email,$wachtwoord,$status);
                $klantnr=$klant->getKlantnr();
                $klantgegevens=$this->model->getById($klantnr);
                $this->data['klant']=$klantgegevens;
+               $this->data['wachtwoord']=$wachtwoord; //het ungehashte wachtwoord
                Session::set('klantnr',$klantnr);
+               Session::set('naam',$naam);
+               Session::set('voornaam',$voornaam);
             }
         }
     }

@@ -5,10 +5,10 @@
     {{ parent() }}
  {% endblock hero %}
     <main>
-        {%  if geldig %}
+        {%  if fout %}
         <div class="wrapper row">
             <div class="small-12 medium-6 column left callout success">
-                <p>{{ geldig }}</p>
+                <p>{{ fout }}</p>
             </div>
         </div>
         {% endif %}
@@ -32,9 +32,9 @@
 
                         </div>
                         test uit-->
-                        <div class="medium-12 column">
+                        <div class="medium-9 column">
                             <label>Paswoord:
-                                <input type="text" name="wachtwoord" value="{{ wachtwoord }}">
+                                <input type="password" name="wachtwoord" value="{{ wachtwoord }}">
                             </label>
                         </div>
                         <div class="medium-12 column">

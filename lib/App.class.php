@@ -10,6 +10,7 @@
 class App
 {
     protected static $router;
+    public static $db;
 
     /**
      * @return mixed
@@ -17,10 +18,13 @@ class App
     public static function getRouter()
     {
         return self::$router;
+
     }
     public static function run($uri)
     {
         self::$router=new Router($uri);
+
+        self::$db=new DB(Config::get('db.connstring'),Config::get('db.username'),Config::get('db.password'));
 
         $controller_class=ucfirst(self::$router->getController()).'Controller'; //de controller
         $controller_method=strtolower(self::$router->getMethodPrefix().self::$router->getAction());  //de actie
