@@ -18,7 +18,8 @@ class KlantModel extends Model
     //returnt een ARRAY VAN KLANT-OBJECTEN
     public function getAll(){
         $sql="select klantnr,voornaam,naam,straat,postcode,gemeente,email,wachtwoord,is_actief from klanten";
-        $resultSet=$this->db->query($sql);
+        $dbh=$this->db->getConnection();
+        $resultSet=$dbh->query($sql);
         $lijst=array();
         foreach ($resultSet as $rij){
             $klant=Klant::create($rij["klantnr"],$rij["voornaam"],$rij["naam"],$rij["straat"],

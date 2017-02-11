@@ -24,7 +24,9 @@ class KlantController extends Controller
 
     public function index()
     {
-
+        if (Session::get('email') && !empty(Session::get('email'))) {
+            Router::redirect('/klant/klantpagina/');
+        }
         if (Session::hasFlash()){
             $this->data["bericht"]=Session::flash();
         }
@@ -34,6 +36,9 @@ class KlantController extends Controller
     }
     public function home()
     {
+        if (Session::get('email') && !empty(Session::get('email'))) {
+            Router::redirect('/klant/klantpagina/');
+        }
         $params = App::getRouter()->getParams();
 
         if (isset($params[0])) {
@@ -43,23 +48,27 @@ class KlantController extends Controller
     }
     public function login()
     {
-        if ($_POST && isset($_POST['email']) && isset($_POST['wachtwoord'])) {
-            $klant = $this->model->getByEmail($_POST['email']);
-            $dbwachtwoord =$klant->getWachtwoord();
-            $wachtwoord=$_POST['wachtwoord'];
-            $email=$klant->getEmail();
-            $status=$klant->getStatus();
-            $juistewachtwoord=password_verify($wachtwoord,$dbwachtwoord);
+        if (Session::get('email') && !empty(Session::get('email'))) {
+            Router::redirect('/klant/klantpagina/');
+        } else {
+            if ($_POST && isset($_POST['email']) && isset($_POST['wachtwoord'])) {
+                $klant = $this->model->getByEmail($_POST['email']);
+                $dbwachtwoord = $klant->getWachtwoord();
+                $wachtwoord = $_POST['wachtwoord'];
+                $email = $klant->getEmail();
+                $status = $klant->getStatus();
+                $juistewachtwoord = password_verify($wachtwoord, $dbwachtwoord);
 
-            if ($klant && $status==1 && $juistewachtwoord) {
-                Session::set('email',$klant->getEmail());
-                Session::set('voornaam',$klant->getVoornaam());
-                Session::set('naam',$klant->getNaam());
-             Router::redirect('/klant/klantpagina');
-            }else{
-                $this->data['fout']='foutief wachtwoord';
-            }
+                if ($klant && $status == 1 && $juistewachtwoord) {
+                    Session::set('email', $klant->getEmail());
+                    Session::set('voornaam', $klant->getVoornaam());
+                    Session::set('naam', $klant->getNaam());
+                    Router::redirect('/klant/klantpagina');
+                } else {
+                    $this->data['fout'] = 'foutief wachtwoord';
+                }
 //            Router::redirect('/klant/');
+            }
         }
     }
     public function afmelden(){
@@ -68,6 +77,9 @@ class KlantController extends Controller
     }
     public function registreer()
     {
+        if (Session::get('email') && !empty(Session::get('email'))) {
+            Router::redirect('/klant/klantpagina/');
+        }
         if (isset($_POST)&&!empty($_POST)){
             $voornaam = $_POST["voornaam"];
             $naam = $_POST["naam"];
