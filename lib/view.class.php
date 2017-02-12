@@ -52,7 +52,8 @@ class View{
         public function render($twig_name,$data)
         {
             Twig_Autoloader::register();
-            $loader=new Twig_Loader_Filesystem(array(ROOT.DS.'views',ROOT.DS.'views'.DS.'klant'));
+            $loader=new Twig_Loader_Filesystem(array(ROOT.DS.'views',ROOT.DS.'views'.DS.'klant',
+                                                ROOT.DS.'views'.DS.'product'));
             $twig=new Twig_Environment($loader);
             $view=$twig->render($twig_name,$data);
             print $view;

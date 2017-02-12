@@ -51,6 +51,7 @@ class KlantController extends Controller
         if (Session::get('email') && !empty(Session::get('email'))) {
             Router::redirect('/klant/klantpagina/');
         } else {
+
             if ($_POST && isset($_POST['email']) && isset($_POST['wachtwoord'])) {
                 $klant = $this->model->getByEmail($_POST['email']);
                 $dbwachtwoord = $klant->getWachtwoord();
@@ -63,6 +64,7 @@ class KlantController extends Controller
                     Session::set('email', $klant->getEmail());
                     Session::set('voornaam', $klant->getVoornaam());
                     Session::set('naam', $klant->getNaam());
+                    setcookie('email',$email,time()+(86400*30),"/");
                     Router::redirect('/klant/klantpagina');
                 } else {
                     $this->data['fout'] = 'foutief wachtwoord';
@@ -145,9 +147,11 @@ class KlantController extends Controller
                $klantgegevens=$this->model->getById($klantnr);
                $this->data['klant']=$klantgegevens;
                $this->data['wachtwoord']=$wachtwoord; //het ungehashte wachtwoord
+                $email=$klantgegevens->getEmail();
                Session::set('klantnr',$klantnr);
                Session::set('naam',$naam);
                Session::set('voornaam',$voornaam);
+
             }
         }
     }
