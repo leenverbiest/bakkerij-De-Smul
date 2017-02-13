@@ -55,8 +55,8 @@ class ProductModel extends Model {
         $stmt->execute(array(':catnr'=>self::getCatnrById($productnr)));
         $result=$stmt->fetch(PDO::FETCH_ASSOC);
         return $result; //returnt STRING (categorienaam)
-
     }
+
     //CREATE
     //voeg record toe aan de tabel producten
     public function create($catnr,$naam,$eenheidsprijs)

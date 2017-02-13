@@ -16,11 +16,19 @@ class ProductController extends Controller{
         parent::__construct($data);
         $this->model=new ProductModel();
     }
-public function lijst()
-{
+    public function lijst()
+    {
     $catmodel=new CategorieModel();
     $this->data['categorielijst']=$catmodel->getAll(); //array van objecten
     $this->data['producten'] =$this->model->getAll();
 
-}
+    }
+    public function catnr()
+    {
+        $params = App::getRouter()->getParams();
+        if (isset($params[0])&& isset($params[1])){
+
+        }
+    }
+
 }

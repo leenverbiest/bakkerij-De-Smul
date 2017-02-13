@@ -9,7 +9,7 @@
                 <div class="menu-left">
                     <ul class="menu vertical">
                     {% for categorie in categorielijst %}
-                        <li><a href="#" >{{ categorie.categorie|upper }}</a></li>
+                        <li><a href="/product/lijst/cat/{{ categorie.catnr }}" >{{ categorie.categorie|upper }}</a></li>
                     {% endfor %}
                     </ul>
                 </div>
