@@ -1,0 +1,48 @@
+/*css voor Admin Section */
+
+/* ********************************************************************************
+ALGEMEEN
+********************************************************************************* */
+.wrapper{
+    width: 90%;
+    max-width: 75%;
+    margin:0 auto;
+}
+header{
+    width:100%;
+    background-color:burlywood;
+}
+/* ******************************************************************************
+TOPNAVIGATIE
+******************************************************************************** */
+.top-bar,.top-bar ul{
+    background-color:black;
+}
+.top-bar-title>h6{
+    color:rgba(255,255,255,0.8);
+}
+.menu>li>a{
+    color:rgba(255,255,255,0.8);
+}
+.menu>li>a {
+    color:rgba(255,255,255,0.8);
+}
+.menu>li>a:hover{
+    background-color:rgba(255,255,255,0.3);
+}
+
+.top-bar-left{
+    background-color: inherit;
+}
+.top-bar ul{
+    background-color:inherit ;
+}
+
+.top-bar ul li:first-child{
+
+    color:rgba(255,255,255,0.8);
+}
+.container{
+    width:90%;
+    margin:auto;
+}

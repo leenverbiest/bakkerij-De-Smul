@@ -21,8 +21,14 @@ class ProductController extends Controller{
     $catmodel=new CategorieModel();
     $this->data['categorielijst']=$catmodel->getAll(); //array van objecten
     $this->data['producten'] =$this->model->getAll();
-
     }
+
+    //ADMINISTRATOR
+    public function admin_lijst()
+    {
+        $this->data['producten']=$this->model->getAll();
+    }
+
     public function catnr()
     {
         $params = App::getRouter()->getParams();

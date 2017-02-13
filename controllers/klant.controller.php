@@ -168,5 +168,9 @@ class KlantController extends Controller
 
         }
     }
+    //ADMINISTRATOR
+    public function admin_index(){
+        $this->data['site_titel']=Config::get('site_name');
+    }
 
 }
