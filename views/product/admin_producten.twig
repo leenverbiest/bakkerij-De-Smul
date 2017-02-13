@@ -1,0 +1,33 @@
+{% extends 'klant/admin_index.twig' %}
+
+{% block content %}
+    <section class="content">
+
+
+        <div class="wrapper row">
+            <h4>Producten</h4>
+            <div class="small-12 medium-5">
+                <table class=" table unstriped ">
+                    {% for product in producten %}
+                        <tr>
+                            <td>{{ product.productnaam }}</td>
+                            <td align="right">
+                                <a href="/admin/product/edit/{{ product.productnr }}/"><button class="button primary {{ product.productnr}}">edit</button></a>
+                                <a href="/admin/product/delete/{{ product.productnr }}/"><button class="button warning">delete</button></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            <div class="small-12 medium-7">
+            </div>
+        </div>
+       <div class="wrapper row">
+           <div class="small-12 medium-2">
+               <a href="/admin/product/add/"><button class="button success">Nieuw product</button></a>
+           </div>
+           <div class="small-12 medium-10"></div>
+       </div>
+
+    </section>
+{% endblock content %}

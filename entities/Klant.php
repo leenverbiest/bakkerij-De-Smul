@@ -21,11 +21,12 @@ class Klant
     private $email;
     private $wachtwoord;
     private $is_actief;
+    private $rechten;
 
     /*de constructor function is private zodat er van buiten de klasse Klant
     *geen nieuw Klant-object meer aangemaakt kan worden
      */
-    private function __construct($klantnr, $voornaam, $naam, $straat, $postcode,$gemeente, $email, $wachtwoord,$is_actief)
+    private function __construct($klantnr, $voornaam, $naam, $straat, $postcode,$gemeente, $email, $wachtwoord,$is_actief,$rechten)
     {
         $this->klantnr = $klantnr;
         $this->voornaam = $voornaam;
@@ -36,12 +37,13 @@ class Klant
         $this->email = $email;
         $this->wachtwoord = $wachtwoord;
         $this->is_actief=$is_actief;
+        $this->rechten=$rechten;
     }
     //de aanmaak van een nieuw Klantobject gebeurt door de create functie
     //die eerst controleert of er nog geen Klantobject met dat klantnr bestaat
-    public static function create($klantnr,$voornaam,$naam,$straat,$postcode,$gemeente,$email,$wachtwoord,$is_actief){
+    public static function create($klantnr,$voornaam,$naam,$straat,$postcode,$gemeente,$email,$wachtwoord,$is_actief,$rechten){
         if(!isset(self::$idMap[$klantnr])){
-            self::$idMap[$klantnr]=new Klant($klantnr,$voornaam,$naam,$straat,$postcode,$gemeente,$email,$wachtwoord,$is_actief);
+            self::$idMap[$klantnr]=new Klant($klantnr,$voornaam,$naam,$straat,$postcode,$gemeente,$email,$wachtwoord,$is_actief,$rechten);
         }
         return self::$idMap[$klantnr];
     }
@@ -56,6 +58,8 @@ class Klant
     public function getEmail(){return $this->email;}
     public function getWachtwoord(){return $this->wachtwoord;}
     public function getStatus(){return $this->is_actief;}
+    public function getRechten(){return $this->rechten;}
+
 
     //SETTERS (geen voor klantnr want deze is auto_increment
     public function setVoornaam($voornaam){$this->voornaam = $voornaam;}
@@ -66,6 +70,8 @@ class Klant
     public function setEmail($email){$this->email = $email;}
     public function setWachtwoord($wachtwoord){$this->wachtwoord = $wachtwoord;}
     public function setStatus($is_actief){$this->is_actief=$is_actief;}
+    public function setRechten($rechten){$this->rechten = $rechten;}
+
 
 
 

@@ -17,13 +17,14 @@ class KlantModel extends Model
     //haal alle klanten uit de database
     //returnt een ARRAY VAN KLANT-OBJECTEN
     public function getAll(){
-        $sql="select klantnr,voornaam,naam,straat,postcode,gemeente,email,wachtwoord,is_actief from klanten";
+        $sql="select klantnr,voornaam,naam,straat,postcode,gemeente,email,wachtwoord,is_actief,rechten from klanten";
         $dbh=$this->db->getConnection();
         $resultSet=$dbh->query($sql);
         $lijst=array();
         foreach ($resultSet as $rij){
             $klant=Klant::create($rij["klantnr"],$rij["voornaam"],$rij["naam"],$rij["straat"],
-                                 $rij["postcode"],$rij["gemeente"],$rij["email"],$rij["wachtwoord"],$rij['is_actief']);
+                                 $rij["postcode"],$rij["gemeente"],$rij["email"],$rij["wachtwoord"],$rij['is_actief'],
+                                 $rij['rechten']);
             array_push($lijst,$klant);
         }
         $this->db=null;
@@ -32,20 +33,20 @@ class KlantModel extends Model
     //haal één specifieke klant op
     //returnt één KLANT-OBJECT
     public function getById($id){
-        $sql="select voornaam,naam,straat,postcode,gemeente,email,wachtwoord,is_actief from klanten WHERE klantnr=:id";
+        $sql="select voornaam,naam,straat,postcode,gemeente,email,wachtwoord,is_actief,rechten from klanten WHERE klantnr=:id";
         $dbh=$this->db->getConnection();
         $stmt=$dbh->prepare($sql);
         $stmt->execute(array(':id'=>$id));
         $rij=$stmt->fetch(\PDO::FETCH_ASSOC);
 
         $klant=Klant::create($id,$rij["voornaam"],$rij["naam"],$rij["straat"],
-        $rij["postcode"],$rij["gemeente"],$rij["email"],$rij["wachtwoord"],$rij['is_actief']);
+        $rij["postcode"],$rij["gemeente"],$rij["email"],$rij["wachtwoord"],$rij['is_actief'],$rij['rechten']);
         $dbh=null;
         return $klant;      //KLANT-OBJECT
     }
     public function getByEmail($email){
         //haalt de volledig klant op aan de hand van het emailadres
-        $sql="select klantnr,voornaam,naam,straat,postcode,gemeente,email,wachtwoord,is_actief from klanten WHERE email=:email";
+        $sql="select klantnr,voornaam,naam,straat,postcode,gemeente,email,wachtwoord,is_actief,rechten from klanten WHERE email=:email";
         $dbh=$this->db->getConnection();
         $stmt=$dbh->prepare($sql);
         $stmt->execute(array(':email'=>$email));
@@ -53,7 +54,7 @@ class KlantModel extends Model
         $dbh=null;
         if ($rij){
             $klant=Klant::create($rij["klantnr"],$rij["voornaam"],$rij["naam"],$rij["straat"],
-                $rij["postcode"],$rij["gemeente"],$email,$rij["wachtwoord"],$rij["is_actief"]);
+                $rij["postcode"],$rij["gemeente"],$email,$rij["wachtwoord"],$rij["is_actief"],$rij['rechten']);
             return $klant;      //KLANT-OBJECT
         }
         return null;
@@ -65,7 +66,7 @@ class KlantModel extends Model
          * returns integer (klantnummer)
          */
         $sql="select klantnr from klanten where email=:email";
-        $dbh=new \PDO(DBCONFIG::$DB_CONNSTRING,DBCONFIG::$DB_USERNAME,DBCONFIG::$DB_PASSWORD);
+        $dbh=$this->db->getConnection();
         $stmt=$dbh->prepare($sql);
         $stmt->execute(array(':email'=>$email));
         $rij=$stmt->fetch(\PDO::FETCH_ASSOC);
@@ -77,7 +78,7 @@ class KlantModel extends Model
         *returnt VARCHAR (gehashte wachtwoord) of FALSE
         */
         $sql="select wachtwoord from klanten where email=:email";
-        $dbh=new \PDO(DBCONFIG::$DB_CONNSTRING,DBCONFIG::$DB_USERNAME,DBCONFIG::$DB_PASSWORD);
+            $dbh=$this->db->getConnection();
         $stmt=$dbh->prepare($sql);
         $stmt->execute(array(':email'=>$email));
         $rij=$stmt->fetch(\PDO::FETCH_ASSOC);
@@ -93,14 +94,14 @@ class KlantModel extends Model
 
     //CREATE
     //voeg record toe aan de tabel klanten
-    public function create($voornaam,$naam,$straat,$postcode,$gemeente,$email,$wachtwoord,$status)
+    public function create($voornaam,$naam,$straat,$postcode,$gemeente,$email,$wachtwoord,$status,$rechten)
     {
         //voegt een nieuwe klant toe aan de database
         //returnt een object $klant met de gegevens van de net toegevoegde klant
         $hashedValue=password_hash($wachtwoord,PASSWORD_DEFAULT);
         $wachtwoord=$hashedValue;
-        $sql = "insert into klanten (voornaam,naam,straat,postcode,gemeente,email,wachtwoord,is_actief)
-                VALUES(:voornaam,:naam,:straat,:postcode,:gemeente,:email,:wachtwoord,:is_actief) ";
+        $sql = "insert into klanten (voornaam,naam,straat,postcode,gemeente,email,wachtwoord,is_actief,rechten)
+                VALUES(:voornaam,:naam,:straat,:postcode,:gemeente,:email,:wachtwoord,:is_actief,:rechten) ";
         $dbh=$this->db->getConnection();
         $stmt = $dbh->prepare($sql);
         $stmt->execute(array(
@@ -111,11 +112,12 @@ class KlantModel extends Model
             ':gemeente'=>$gemeente,
             ':email' => $email,
             ':wachtwoord' => $wachtwoord,
-            ':is_actief'=>$status
+            ':is_actief'=>$status,
+            ':rechten'=>$rechten
         ));
         $klantnr = $dbh->lastInsertId();
         $dbh = null;
-        $klant=Klant::create($klantnr,$voornaam,$naam,$straat,$postcode,$gemeente,$email,$wachtwoord,$status);
+        $klant=Klant::create($klantnr,$voornaam,$naam,$straat,$postcode,$gemeente,$email,$wachtwoord,$status,$rechten);
         return $klant;  //RETURN OBJECT KLANT
     }
     //UPDATE
@@ -123,10 +125,9 @@ class KlantModel extends Model
         public function update($klant)
         {
             $sql = "update klanten set voornaam=:voornaam,naam=:naam,straat=:straat,postcode=:postcode,gemeente=:gemeente,
-              email=:email
+              email=:email,is_actief=:status,rechten=:rechten
               where klantnr=:id";
-
-            $dbh = new PDO(DBCONFIG::$DB_CONNSTRING, DBCONFIG::$DB_USERNAME, DBCONFIG::$DB_PASSWORD);
+            $dbh=$this->db->getConnection();
             $stmt = $dbh->prepare($sql);
             $stmt->execute(array(
                 ':voornaam' =>$klant->getVoornaam(),
@@ -135,6 +136,8 @@ class KlantModel extends Model
                 ':postcode' => $klant->getPostcode(),
                 ':gemeente'=>$klant->getGemeente(),
                 ':email' => $klant->getEmail(),
+                ':status'=>$klant->getStatus(),
+                ':rechten'=>$klant->getRechten(),
                 ':id' => $klant->getKlantnr()
             ));
             $dbh = null;
@@ -144,7 +147,7 @@ class KlantModel extends Model
     //returnt niets
     public function delete($id){
         $sql="delete from klanten where klantnr=:id";
-        $dbh=new PDO(DBCONFIG::$DB_CONNSTRING,DBCONFIG::$DB_USERNAME,DBCONFIG::$DB_PASSWORD);
+        $dbh=$this->db->getConnection();
         $stmt=$dbh->prepare($sql);
         $stmt->execute(array(':id'=>$id));
         $dbh=null;

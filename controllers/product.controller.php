@@ -24,11 +24,30 @@ class ProductController extends Controller{
     }
 
     //ADMINISTRATOR
-    public function admin_lijst()
-    {
-        $this->data['producten']=$this->model->getAll();
+    public function admin_index(){
+        $this->data['site_titel']=Config::get('site_name');
     }
-
+    public function admin_producten()
+    {
+        $this->data['site_titel']=Config::get('site_name');
+     $this->data['producten']=$this->model->getAll();
+    }
+    public function admin_edit()
+    {
+        $params=App::getRouter()->getParams();
+        if (isset($params[0])) {
+        $id=$params[0];
+        $this->model->update($id);
+        }
+    }
+    public function admin_delete()
+    {
+        $params=App::getRouter()->getParams();
+        if (isset($params[0])) {
+            $id=$params[0];
+            $this->model->delete($id);
+        }
+    }
     public function catnr()
     {
         $params = App::getRouter()->getParams();

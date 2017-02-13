@@ -15,3 +15,12 @@ require_once (ROOT.DS.'lib'.DS.'init.php');
 
 session_start();
 App::run($_SERVER['REQUEST_URI']);
+
+//$router=new Router($_SERVER['REQUEST_URI']);
+//
+//print_r('Route '.$router->getRoute());
+//print_r('Language '.$router->getLanguage());
+//print_r('Controller '.$router->getController());
+//print_r('Action '.$router->getMethodPrefix().$router->getAction());
+//echo 'Params: ';
+//print_r($router->getParams());

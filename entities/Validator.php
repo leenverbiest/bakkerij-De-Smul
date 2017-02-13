@@ -68,7 +68,7 @@ class Validator
     }
     protected function tekst($field,$value,$satisfier)
     {
-        return preg_match("/^[a-zA-Z]*$/",$value);
+        return preg_match("/^[a-zA-Z_-]*$/",$value);
 
     }
     protected function gemeente($field,$value,$satisifer){
