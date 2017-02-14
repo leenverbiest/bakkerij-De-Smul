@@ -47,16 +47,6 @@ class ProductController extends Controller{
         }else{
             Router::redirect('/klant/login/');
         }
-//        if (Session::get('email') && !empty(Session::get('email')&& Session::get('rechten'))) {
-//            switch (Session::get('rechten')) {
-//                case 'klant':
-//                    Router::redirect('/klant/klantpagina/');
-//                    break;
-//                case 'admin':
-//                    Router::redirect('/klant/admin_index/');
-//                    break;
-//            }
-//        }
         $catmodel=new CategorieModel();
         $this->data['categorielijst']=$catmodel->getAll(); //array van CATEGORIE/objecten
         $this->data['site_titel']=Config::get('site_name');

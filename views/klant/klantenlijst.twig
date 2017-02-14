@@ -1,29 +1,66 @@
-{% extends 'basis.twig' %}
+{% extends 'admin_index.twig' %}
 
 {% block content %}
+    <section class="content">
+    <div class="wrapper row">
+        <div class="small-12 medium-12 column">
+            <table class="table unstriped">
+                <th><h4>Klanten</h4></th>
+                <tr>
+                    <td>Voornaam</td>
+                    <td>Naam</td>
+                    <td>Straat</td>
+                    <td>Postcode</td>
+                    <td>Gemeente</td>
+                    <td>Email</td>
+                    <td>Status</td>
+                    <td>Rechten</td>
+                </tr>
+                {% for klant in klanten %}
+                    <tr>
+                        <td><a href="{{ klant.voornaam}}" >{{ klant.voornaam|upper }}</a></td>
+                        <td><a href="{{ klant.naam}}" >{{ klant.naam|upper }}</a></td>
+                        <td><a href="{{ klant.straat}}" >{{ klant.straat|upper }}</a></td>
+                        <td><a href="{{ klant.postcode}}" >{{ klant.postcode|upper }}</a></td>
+                        <td><a href="{{ klant.gemeente}}" >{{ klant.gemeente|upper }}</a></td>
+                        <td><a href="{{ klant.email}}" >{{ klant.email|upper }}</a></td>
+                        <td><a href="{{ klant.status}}" >{{ klant.status|upper }}</a></td>
+                        <td><a href="{{ klant.rechten}}" >{{ klant.rechten|upper }}</a></td>
+                        <td><a href="/klant/admin_edit/{{ klant.klantnr}}"><button class="button primary {{ product.productnr}}">wijzigen</button></a></td>
+                        <td><a href="/klant/admin_delete/{{ klant.klantnr}}"><button class="button warning">verwijder</button></a></td>
+                    </tr>
+                {% endfor %}
+            </table>
 
-    <table>
-        <tr>
-            <th>Klantnr</th>
-            <th>Voornaam</th>
-            <th>Naam</th>
-            <th>Straat</th>
-            <th>Postcode en Gemeente</th>
-            <th>Email</th>
-            <th>Wachtwoord</th>
-        </tr>
-        {% for klant in klanten %}
-            <tr>
-                <td>{{ klant.klantnr }}</td>
-                <td>{{ klant.voornaam }}</td>
-                <td>{{ klant.naam }}</td>
-                <td>{{ klant.straat }}</td>
-                <td>{{ klant.postcodegemeente }}</td>
-                <td>{{ klant.email }}</td>
-                <td>{{ klant.wachtwoord }}</td>
-            </tr>
-        {% endfor %}
-    </table>
+        </div>
+
+    </div>
+
+
+    {#<table>#}
+        {#<tr>#}
+            {#<th>Klantnr</th>#}
+            {#<th>Voornaam</th>#}
+            {#<th>Naam</th>#}
+            {#<th>Straat</th>#}
+            {#<th>Postcode</th>#}
+            {#<th>Gemeente</th>#}
+            {#<th>Email</th>#}
+            {#<th>Status</th>#}
+        {#</tr>#}
+        {#{% for klant in klanten %}#}
+            {#<tr>#}
+                {#<td>{{ klant.klantnr }}</td>#}
+                {#<td>{{ klant.voornaam }}</td>#}
+                {#<td>{{ klant.naam }}</td>#}
+                {#<td>{{ klant.straat }}</td>#}
+                {#<td>{{ klant.postcode }}</td>#}
+                {#<td>{{ klant.gemeente }}</td>#}
+                {#<td>{{ klant.email }}</td>#}
+                {#<td>{{ klant.status }}</td>#}
+            {#</tr>#}
+        {#{% endfor %}#}
+    {#</table>#}
 
 
 {% endblock content %}

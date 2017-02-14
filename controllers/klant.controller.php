@@ -178,15 +178,17 @@ class KlantController extends Controller
         $this->data['voornaam']=Session::get('voornaam');
         $this->data['naam']=Session::get('naam');
     }
+
+    //ADMINISTRATOR
     public function klantenlijst()
     {
-        $params=App::getRouter()->getParams();
-        if (isset($params[0])){
-            $this->data['klanten']=$this->model->getAll();
-
+        if (Session::get('rechten')=="admin"){
+            $this->data['site_titel']=Config::get('site_name');
+        }else{
+            Router::redirect('/klant/login/');
         }
+        $this->data['klanten']=$this->model->getAll();
     }
-    //ADMINISTRATOR
     public function admin_index(){
         if (Session::get('rechten')=="admin"){
             $this->data['site_titel']=Config::get('site_name');
@@ -197,6 +199,83 @@ class KlantController extends Controller
     public function admin_afmelden(){
         Session::destroy();
         Router::redirect('/klant/login/');
+    }
+    public function admin_edit()
+    {
+        if (Session::get('rechten') == "admin") {
+            $this->data['site_titel'] = Config::get('site_name');
+        } else {
+            Router::redirect('/klant/login/');
+        }
+        $params = App::getRouter()->getParams();
+        if (isset($params[0])) {
+            $id = $params[0];
+            $klant = $this->model->getById($id);
+            $this->data['klantgegevens']=$klant;
+            if (isset($_POST) && !empty($_POST)) {
+                $voornaam = $_POST["voornaam"];
+                print $voornaam;
+                $naam = $_POST["naam"];
+                $straat = $_POST["straat"];
+                $postcode = $_POST['postcode'];
+                $gemeente=$_POST['gemeente'];
+                $email = $_POST['email'];
+                $status = $_POST['status'];
+                $rechten=$_POST['rechten'];
+                $wachtwoord=$klant->getWachtwoord();
+
+                //valideer input en pass it to de ValidatorController
+                $errorHandler=new Errorhandler();
+                $validator=new Validator($errorHandler);
+                $validation=$validator->check($_POST,[
+                    'voornaam' => [
+                        'verplicht' => true,
+                        'tekst' => true
+                    ],
+                    'naam' => [
+                        'verplicht' => true,
+                        'tekst' => true
+                    ],
+                    'straat' => [
+                        'verplicht' => true
+                    ],
+                    'postcode'=>[
+                        'verplicht'=>true,
+                        'lengte'=>4
+                    ],
+                    'gemeente' => [
+                        'verplicht' => true,
+                        'gemeente'=>true
+                    ],
+                    'email' => [
+                        'verplicht' => true,
+                        'email' => true
+                    ]
+                ]);
+                if($validation->fails()) {
+                    $params = App::getRouter()->getParams();
+                    $this->data['foutVoornaam'] = $validation->errors()->first('voornaam');
+                    $this->data['foutNaam'] = $validation->errors()->first('naam');
+                    $this->data['foutStraat'] = $validation->errors()->first('straat');
+                    $this->data['foutPostcode'] = $validation->errors()->first('postcode');
+                    $this->data['foutGemeente'] = $validation->errors()->first('gemeente');
+                    $this->data['foutEmail'] = $validation->errors()->first('email');
+                }else{
+                    $klantbijgewerkt=Klant::create($id,$voornaam,$straat,$postcode,$gemeente,$email,$wachtwoord,$status,
+                        $rechten,$wachtwoord);
+                    $this->model->update($klantbijgewerkt);
+                    Router::redirect('/klant/klantenlijst/');
+                }
+
+            }
+        }
+    }
+    public function admin_add(){
+        if (Session::get('rechten')=="admin"){
+            $this->data['site_titel']=Config::get('site_name');
+        }else{
+            Router::redirect('/klant/login/');
+        }
     }
 
 
