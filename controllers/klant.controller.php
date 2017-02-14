@@ -44,12 +44,7 @@ class KlantController extends Controller
         if (Session::get('email') && !empty(Session::get('email'))) {
             Router::redirect('/klant/klantpagina/');
         }
-        $params = App::getRouter()->getParams();
 
-        if (isset($params[0])) {
-            $this->data['klant'] = "Leen Verbiest";
-
-        }
     }
     public function login()
     {
