@@ -19,13 +19,12 @@ class ProductController extends Controller{
     public function lijst()
     {
     $catmodel=new CategorieModel();
-        $this->data['categorielijst']=$catmodel->getAll(); //array van objecten
+        $this->data['categorielijst']=$catmodel->getAll(); //array van CATEGORIE/objecten
+//        $this->data['producten']=$this->model->getAll(); //array van PRODUCT-objecten
         $params=App::getRouter()->getParams();
         if (isset($params[0])){
-            $this->data['producten'] =$this->model->getById($params[0]);
-        }else{
-            $this->data['producten']=$this->model->getById('1');
-
+            $categorie=$params[0];
+        $this->data['producten']=$this->model->getProductByCategorie($categorie);
         }
 
     }

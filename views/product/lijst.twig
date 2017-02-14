@@ -1,5 +1,8 @@
 {% extends 'klant/basis.twig' %}
-
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="../../css/lijst.css">
+{% endblock stylesheets %}
 {% block content %}
     <section class="content">
         <div class="wrapper row">
@@ -8,12 +11,13 @@
                     <div class="menu-left">
                         <ul class="menu vertical">
                             {% for categorie in categorielijst %}
-                                <li><a href="/product/lijst/cat/{{ categorie.catnr }}" >{{ categorie.categorie|upper }}</a></li>
+                                <li><a href="{{ categorie.categorie }}" >{{categorie.categorie|upper }}</a></li>
                             {% endfor %}
                         </ul>
                     </div>
                 </div>
             <div class="small-12 medium-9 column">
+
                 <h2>Producten</h2>
                 <table>
                     <tr>
@@ -21,13 +25,15 @@
                         <th>Prijs</th>
                     </tr>
                     {% for product in producten %}
-                        <tr>
-                            <td>{{ product.product_naam }}</td>
+                    <tr>
+                            <td>{{ product.productnaam }}</td>
                             <td>{{product.eenheidsprijs}}</td>
                         </tr>
                     {% endfor %}
+
                 </table>
             </div>
         </div>
+
     </section>
 {% endblock content %}

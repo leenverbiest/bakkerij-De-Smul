@@ -6,24 +6,27 @@
  * Time: 20:12
  */
 require_once (ROOT.DS.'entities'.DS.'Product.php');
+require_once (ROOT.DS.'entities'.DS.'Categorie.php');
 
 class ProductModel extends Model {
 
 //READ
     //haal alle producten uit de database
     //returnt een ARRAY VAN PRODUCT-OBJECTEN
-    public function getAll(){
-        $sql="select productnr,catnr,product_naam,eenheidsprijs from producten";
-        $dbh=$this->db->getConnection();
-        $resultSet=$dbh->query($sql);
-        $lijst=array();
-        foreach ($resultSet as $rij){
-           $product=Product::create($rij["productnr"],$rij['catnr'],$rij['product_naam'],$rij['eenheidsprijs']);
-            array_push($lijst,$product);
+    public function getAll()
+    {
+        $sql = "select productnr,catnr,product_naam,eenheidsprijs from producten";
+        $dbh = $this->db->getConnection();
+        $resultSet = $dbh->query($sql);
+        $lijst = array();
+        foreach ($resultSet as $rij) {
+            $product = Product::create($rij["productnr"], $rij['catnr'], $rij['product_naam'], $rij['eenheidsprijs']);
+            array_push($lijst, $product);
         }
-        $this->db=null;
+        $this->db = null;
         return $lijst; //ARRAY VAN PRODUCT-OBJECTEN
     }
+
     //haal één specifiek product op
     //returnt één product-OBJECT
     public function getById($id){
@@ -32,10 +35,27 @@ class ProductModel extends Model {
         $stmt=$dbh->prepare($sql);
         $stmt->execute(array(':id'=>$id));
         $rij=$stmt->fetch(\PDO::FETCH_ASSOC);
-
         $product=Product::create($rij['productnr'],$rij['catnr'],$rij['product_naam'],$rij['eenheidsprijs']);
         $dbh=null;
         return $product;      //PRODUCT-OBJECT
+    }
+    //haal de producten op van een opgegeven categorie
+    public function getProductByCategorie($categorie){
+        $sql="SELECT producten.productnr,producten.product_naam,producten.eenheidsprijs,categorie.catnr,categorie.categorie
+              FROM producten INNER JOIN categorie
+              ON producten.catnr=categorie.catnr
+              WHERE categorie.categorie=:categorie";
+        $dbh=$this->db->getConnection();
+        $stmt=$dbh->prepare($sql);
+        $stmt->execute(array(':categorie'=>$categorie));
+        $resultset=$stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $lijst=array();
+        $dbh=null;
+        foreach ($resultset as $rij){
+            $product=Product::create($rij['productnr'],$rij['catnr'],$rij['product_naam'],$rij['eenheidsprijs']);
+            array_push($lijst,$product);
+        }
+        return $lijst;      //array van product-objecten
     }
     public function getCatnrById($id){
         $sql="select catnr from producten WHERE productnr=:id";
