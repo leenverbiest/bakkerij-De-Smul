@@ -102,7 +102,6 @@ class ProductModel extends Model {
     public function update($product)
     {
         $sql = "update producten set catnr=:catnr,product_naam=:naam,eenheidsprijs=:prijs where productnr=:id";
-
         $dbh = $this->db->getConnection();
         $stmt = $dbh->prepare($sql);
         $stmt->execute(array(

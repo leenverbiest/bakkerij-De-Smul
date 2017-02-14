@@ -1,0 +1,69 @@
+{% extends 'admin_producten.twig' %}
+
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="../../css/form.css">
+{% endblock stylesheets %}
+
+{% block content %}
+    <section class="content">
+        <div class="wrapper row">
+
+    <form method="post" action="">
+
+        <div class="row">
+            <div class="small-3 columns">
+                <label for="middle-label" class="text-right middle">Categorie</label>
+            </div>
+            <div class="small-7 columns">
+
+                    <select name="categorie">
+                        <option value="">--Selecteer een categorie--</option>
+                        {% for categorie in categorielijst %}
+                        <option value="{{ categorie.catnr }}">{{ categorie.categorie }}</option>
+                        {% endfor %}
+                    </select>
+
+            </div>
+            <div class="small-2 columns">
+                <span class="error">{{ foutCategorie }}</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="small-3 columns">
+                <label for="middle-label" class="text-right middle">Productnaam</label>
+            </div>
+            <div class="small-7 columns">
+                <input type="text" id="middle-label" placeholder="productnaam" name="naam" value="{{ naam }}">
+            </div>
+            <div class="small-2 columns">
+                <span class="error">{{ foutNaam }}</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="small-3 columns">
+                <label for="middle-label" class="text-right middle">prijs</label>
+            </div>
+            <div class="small-7 columns">
+                <input type="text" id="middle-label" placeholder="prijs" name="prijs" value="{{ prijs }}">
+            </div>
+            <div class="small-2 columns">
+                <span class="error">{{ foutStraat }}</span>
+            </div>
+
+            <div class="row">
+                <div class="small-3 columns">
+
+                </div>
+                <div class="small-9 columns">
+                    <button type="submit" class="button text-right middle registreer">Opslaan</button>
+
+                </div>
+            </div>
+        </div>
+
+    </form>
+        </div>
+    </section>
+{% endblock content %}
