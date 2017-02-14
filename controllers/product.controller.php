@@ -20,12 +20,13 @@ class ProductController extends Controller{
     }
     public function lijst()
     {
-    $catmodel=new CategorieModel();
+        $catmodel=new CategorieModel();
         $this->data['categorielijst']=$catmodel->getAll(); //array van CATEGORIE/objecten
+        $this->data['site_titel']=Config::get('site_name');
         $params=App::getRouter()->getParams();
         if (isset($params[0])){
             $categorie=$params[0];
-        $this->data['producten']=$this->model->getProductByCategorie($categorie);
+            $this->data['producten']=$this->model->getProductByCategorie($categorie);
         }
 
     }
@@ -47,21 +48,37 @@ class ProductController extends Controller{
 
 //        $this->data['producten']=$this->model->getAll();
     }
+    public function admin_categorie(){
+        $catmodel=new CategorieModel();
+        $this->data['categorielijst']=$catmodel->getAll(); //array van CATEGORIE/objecten
+        $this->data['site_titel']=Config::get('site_name');
+    }
     public function admin_edit()
     {
+        $this->data['site_titel']=Config::get('site_name');
         $params = App::getRouter()->getParams();
         if (isset($params[0])) {
             $id = $params[0];
             $product = $this->model->getById($id);
-            print_r($product);
-            $this->model->update($product);
+            $catnr=$product->getCatnr();
+            $this->data['productgegevens']=$product;
+            $catmodel=new CategorieModel();
+            $categorie=$catmodel->getById($catnr);
+            $catnaam=$categorie->getCategorie();
+            $this->data['categorie']=$catnaam;
+            $this->data['categorielijst']=$catmodel->getAll();
+            if (isset($_POST)&&!empty($_POST)){
+                $catnr = $_POST["categorie"];
+                $naam = $_POST["naam"];
+                $prijs = $_POST["prijs"];
+
+                $this->model->update($id,$catnr,$naam,$prijs);
+                Router::redirect('/product/admin_producten/');
+            }
 
         }
-    }
-    public function admin_editform(){
 
     }
-
     public function admin_delete()
     {
         $params=App::getRouter()->getParams();

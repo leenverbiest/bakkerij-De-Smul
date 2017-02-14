@@ -99,15 +99,16 @@ class ProductModel extends Model {
     }
     //UPDATE
     //Product met bepaald productnr updaten
-    public function update($product)
+    public function update($productnr,$catnr,$productnaam,$prijs)
     {
         $sql = "update producten set catnr=:catnr,product_naam=:naam,eenheidsprijs=:prijs where productnr=:id";
         $dbh = $this->db->getConnection();
         $stmt = $dbh->prepare($sql);
         $stmt->execute(array(
-            ':catnr'=>$product->getCatnr(),
-            ':naam' =>$product->getProductnaam(),
-            ':prijs' => $product->getEenheidsprijs()
+            ':catnr'=>$catnr,
+            ':naam' =>$productnaam,
+            ':prijs' => $prijs,
+            ':id'=>$productnr
         ));
         $dbh = null;
     }

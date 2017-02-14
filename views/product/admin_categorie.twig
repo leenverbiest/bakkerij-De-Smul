@@ -1,0 +1,28 @@
+{% extends 'admin_producten.twig' %}
+
+{% block content %}
+    <section class="content">
+    <div class="wrapper row">
+        <div class="small-12 medium-9 column">
+            <table class=" table unstriped ">
+
+                {% for categorie in categorielijst %}
+                    <tr>
+                        <td>{{ categorie.categorie }}</td>
+                        <td align="right">
+                            <a href="/product/admin_edit/{{ product.productnr }}"><button class="button primary {{ product.productnr}}">edit</button></a>
+                            <a href="/product/admin_delete/{{ product.productnr }}"><button class="button warning">delete</button></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+    </div>
+    <div class="wrapper row">
+        <div class="small-12 medium-2">
+            <a href="/product/admin_add"><button class="button success">Nieuwe categorie</button></a>
+        </div>
+        <div class="small-12 medium-10"></div>
+    </div>
+{% endblock content %}

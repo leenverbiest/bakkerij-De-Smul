@@ -1,0 +1,86 @@
+{% extends 'admin_add.twig' %}
+
+{% block content %}
+    <section class="content">
+        <div class="wrapper row">
+            <div class="small-12 medium-6 column">
+                <table class="table unstriped">
+                    <th><h4>Product:{{ productgegevens.productnaam }}</h4></th>
+                    <tr>
+                        <td>Categorie</td>
+                        <td>Naam</td>
+                        <td>Prijs</td>
+                    </tr>
+                    <tr>
+                            <td>{{ categorie }}</td>
+                            <td>{{ productgegevens.productnaam }}</td>
+                            <td>{{ productgegevens.eenheidsprijs }}</td>
+                        </tr>
+
+                </table>
+
+            </div>
+        </div>
+        <div class="wrapper row">
+            <div class="small-12 medium-8 column">
+
+                    <form method="post" action="">
+
+                        <div class="row">
+                            <div class="small-3 columns">
+                                <label for="middle-label" class="text-right middle">Categorie</label>
+                            </div>
+                            <div class="small-7 columns">
+
+                                <select name="categorie">
+                                    <option value="">--Selecteer een categorie--</option>
+                                    {% for categorie in categorielijst %}
+                                        <option value="{{ categorie.catnr }}">{{ categorie.categorie }}</option>
+                                    {% endfor %}
+                                </select>
+
+                            </div>
+                            <div class="small-2 columns">
+                                <span class="error">{{ foutCategorie }}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="small-3 columns">
+                                <label for="middle-label" class="text-right middle">Productnaam</label>
+                            </div>
+                            <div class="small-7 columns">
+                                <input type="text" id="middle-label" placeholder="productnaam" name="naam" value="{{ naam }}">
+                            </div>
+                            <div class="small-2 columns">
+                                <span class="error">{{ foutNaam }}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="small-3 columns">
+                                <label for="middle-label" class="text-right middle">prijs</label>
+                            </div>
+                            <div class="small-7 columns">
+                                <input type="text" id="middle-label" placeholder="prijs" name="prijs" value="{{ prijs }}">
+                            </div>
+                            <div class="small-2 columns">
+                                <span class="error">{{ foutStraat }}</span>
+                            </div>
+
+                            <div class="row">
+                                <div class="small-3 columns">
+
+                                </div>
+                                <div class="small-9 columns">
+                                    <button type="submit" class="button text-right middle registreer">Opslaan</button>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+            </div>
+
+        </div>
+
+    </section>
+{% endblock content %}

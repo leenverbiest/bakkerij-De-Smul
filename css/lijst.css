@@ -3,9 +3,29 @@
 /* ****************************************************************************
 CATEGORIEËN
  ***************************************************************************** */
-#tabs ul{
-    list-style-type: none;
+/* ******************************************************************************
+PRODUCTEN
+******************************************************************************** */
+.vertical {
+    background-color: white;
 }
-#tabs ul>li>a{
+.vertical>li>a{
+    color:black;
+}
+table{
+    border-spacing: 0;
+}
+table.unstriped tbody{
+    background-color: white;
+    border-spacing:0;
+}
+table.unstriped tbody td{
+    padding: 0.5em;
+}
+table.unstriped tbody tr{
+    background-color: inherit;
+    border: 1px solid black;
+}
+ a {
     color:black;
 }
