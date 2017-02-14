@@ -2,43 +2,48 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="../../css/lijst.css">
+
 {% endblock stylesheets %}
 {% block content %}
     <section class="content">
         <div class="wrapper row">
-            <div class="small-12 medium-3 column">
-                <table class="table unstriped">
-                    <th><h4>Categorie</h4></th>
+            <div class="small-6 medium-3 column">
+                <ul class="menucat ">
                     {% for categorie in categorielijst %}
-                        <tr>
-                            <td><a href="{{ categorie.categorie }}" >{{ categorie.categorie|upper }}</a></td>
-                        </tr>
-                    {% endfor %}
-                </table>
+                    <li><a href="{{ categorie.categorie }}">{{ categorie.categorie|upper }}</a></li>
+                        {% endfor %}
+                </ul>
+                {#<table class="table unstriped">#}
+                    {#<th><h4>Categorie</h4></th>#}
+                    {#{% for categorie in categorielijst %}#}
+                        {#<tr>#}
+                            {#<td><a href="{{ categorie.categorie }}" >{{ categorie.categorie|upper }}</a></td>#}
+                        {#</tr>#}
+                    {#{% endfor %}#}
+                {#</table>#}
 
             </div>
-            <div class="small-12 medium-9 column">
+            <div class="small-6 medium-5 column">
                 <table class=" table unstriped ">
                     <th><h4>Producten</h4></th>
                     {% for product in producten %}
                         <tr>
                             <td>{{ product.productnaam }}</td>
-                            <td align="right">
-                                <a href="/product/admin_edit/{{ product.productnr }}"><button class="button primary {{ product.productnr}}">edit</button></a>
-                                <a href="/product/admin_delete/{{ product.productnr }}"><button class="button warning">delete</button></a>
-                            </td>
+                            <td>{{ product.eenheidsprijs }} €</td>
                         </tr>
                     {% endfor %}
                 </table>
             </div>
+            <div class="medium-4 column"></div>
 
-        </div>
-        <div class="wrapper row">
-            <div class="small-12 medium-2">
-                <a href="/product/admin_add"><button class="button success">Nieuw product</button></a>
             </div>
-            <div class="small-12 medium-10"></div>
+        <br><br><br><br>
+        <div class="wrapper row">
+         <div class="small-12 medium-12 column">
+             <button type="submit" class="button expanded text-right middle registreer">
+                 <a href="/klant/registreer/">Nog geen klant? Registreer u nu GRATIS!</a>
+             </button>
         </div>
-
+        </div>
     </section>
 {% endblock content %}

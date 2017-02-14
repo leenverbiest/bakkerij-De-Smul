@@ -38,7 +38,6 @@ class KlantModel extends Model
         $stmt=$dbh->prepare($sql);
         $stmt->execute(array(':id'=>$id));
         $rij=$stmt->fetch(\PDO::FETCH_ASSOC);
-
         $klant=Klant::create($id,$rij["voornaam"],$rij["naam"],$rij["straat"],
         $rij["postcode"],$rij["gemeente"],$rij["email"],$rij["wachtwoord"],$rij['is_actief'],$rij['rechten']);
         $dbh=null;
@@ -122,23 +121,22 @@ class KlantModel extends Model
     }
     //UPDATE
     //Klant met bepaald klantnr updaten
-        public function update($klant)
+        public function update($id,$voornaam,$naam,$straat,$postcode,$gemeente,$email,$status)
         {
             $sql = "update klanten set voornaam=:voornaam,naam=:naam,straat=:straat,postcode=:postcode,gemeente=:gemeente,
-              email=:email,is_actief=:status,rechten=:rechten
+              email=:email,is_actief=:status
               where klantnr=:id";
             $dbh=$this->db->getConnection();
             $stmt = $dbh->prepare($sql);
             $stmt->execute(array(
-                ':voornaam' =>$klant->getVoornaam(),
-                ':naam' => $klant->getNaam(),
-                ':straat' => $klant->getStraat(),
-                ':postcode' => $klant->getPostcode(),
-                ':gemeente'=>$klant->getGemeente(),
-                ':email' => $klant->getEmail(),
-                ':status'=>$klant->getStatus(),
-                ':rechten'=>$klant->getRechten(),
-                ':id' => $klant->getKlantnr()
+                ':voornaam' =>$voornaam,
+                ':naam' => $naam,
+                ':straat' => $straat,
+                ':postcode' => $postcode,
+                ':gemeente'=>$gemeente,
+                ':email' => $email,
+                ':status'=>$status,
+                ':id' => $id
             ));
             $dbh = null;
         }
