@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% block head %}
+        <meta charset="utf-8">
+        <title>{% block title %}Bakkerij De Smul{% endblock title %}</title>
+
+        {% block stylesheets %}
+            <link rel="stylesheet" href="../../lib/css/foundation.min.css">
+            <link rel="stylesheet" href="../../css/admin.css">
+        {% endblock stylesheets %}
+
+    {% endblock head %}
+
+</head>
+
+{# body #}
+<body>
+
+{% block topnavigatie %}
+    <header>
+        <div class="top-bar">
+            <div class="wrapper">
+                <div class="top-bar-title">
+                    <h6>{{ site_titel}}-Admin Section</h6>
+                </div>
+                <div class="top-bar-left">
+                    <ul class="menu">
+                        <li><a href="/product/admin_producten/">Producten</a></li>
+                    </ul>
+                </div>
+                <div class="top-bar-right">
+                    <ul class="menu">
+                        <li><a href="/klant/admin_afmelden/">Afmelden</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header> {# einde header #}
+{% endblock topnavigatie %}
+{% block content %}
+
+{% endblock content %}
+{% block scripts %}
+
+    <script src="../../lib/js/vendor/what-input.js"></script>
+    <script src="../../lib/js/vendor/foundation.min.js"></script>
+
+{% endblock scripts %}
+{# einde script block #}
+
+</body> {# einde body #}
+</html>

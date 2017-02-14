@@ -49,12 +49,21 @@ TOPNAVIGATIE
 /* ******************************************************************************
 PRODUCTEN
 ******************************************************************************** */
+.vertical {
+    background-color: white;
+}
+.vertical>li>a{
+    color:black;
+}
 table{
     border-spacing: 0;
 }
 table.unstriped tbody{
     background-color: white;
     border-spacing:0;
+}
+table.unstriped tbody td{
+    padding: 0.5em;
 }
 table.unstriped tbody tr{
     background-color: inherit;

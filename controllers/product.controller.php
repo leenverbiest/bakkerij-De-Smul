@@ -19,8 +19,15 @@ class ProductController extends Controller{
     public function lijst()
     {
     $catmodel=new CategorieModel();
-    $this->data['categorielijst']=$catmodel->getAll(); //array van objecten
-    $this->data['producten'] =$this->model->getAll();
+        $this->data['categorielijst']=$catmodel->getAll(); //array van objecten
+        $params=App::getRouter()->getParams();
+        if (isset($params[0])){
+            $this->data['producten'] =$this->model->getById($params[0]);
+        }else{
+            $this->data['producten']=$this->model->getById('1');
+
+        }
+
     }
 
     //ADMINISTRATOR
@@ -29,8 +36,10 @@ class ProductController extends Controller{
     }
     public function admin_producten()
     {
+        $catmodel=new CategorieModel();
+        $this->data['categorielijst']=$catmodel->getAll(); //array van objecten
         $this->data['site_titel']=Config::get('site_name');
-     $this->data['producten']=$this->model->getAll();
+        $this->data['producten']=$this->model->getAll();
     }
     public function admin_edit()
     {

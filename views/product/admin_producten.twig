@@ -2,12 +2,27 @@
 
 {% block content %}
     <section class="content">
-
-
         <div class="wrapper row">
-            <h4>Producten</h4>
-            <div class="small-12 medium-5">
+            <div class="small-12 medium-3 column">
+                <table class="table unstriped">
+                    <th><h4>Categorie</h4></th>
+                    {% for categorie in categorielijst %}
+                        <tr>
+                            <td><a href="/product/lijst/cat/{{ categorie.catnr }}" >{{ categorie.categorie|upper }}</a></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                {#<div class="menu-left">#}
+                    {#<ul class="menu vertical">#}
+                        {#{% for categorie in categorielijst %}#}
+                            {#<li><a href="/product/lijst/cat/{{ categorie.catnr }}" >{{ categorie.categorie|upper }}</a></li>#}
+                        {#{% endfor %}#}
+                    {#</ul>#}
+                {#</div>#}
+            </div>
+            <div class="small-12 medium-4 column">
                 <table class=" table unstriped ">
+                    <th><h4>Producten</h4></th>
                     {% for product in producten %}
                         <tr>
                             <td>{{ product.productnaam }}</td>
@@ -19,7 +34,7 @@
                     {% endfor %}
                 </table>
             </div>
-            <div class="small-12 medium-7">
+            <div class="small-12 medium-4">
             </div>
         </div>
        <div class="wrapper row">

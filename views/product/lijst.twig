@@ -3,26 +3,30 @@
 {% block content %}
     <section class="content">
         <div class="wrapper row">
-            <div class="small-12 medium-3 column">
-                <h4>Categorieën</h4>
-
-                <div class="menu-left">
-                    <ul class="menu vertical">
-                    {% for categorie in categorielijst %}
-                        <li><a href="/product/lijst/cat/{{ categorie.catnr }}" >{{ categorie.categorie|upper }}</a></li>
-                    {% endfor %}
-                    </ul>
+                <div class="small-12 medium-3 column">
+                    <h4>Categorieën</h4>
+                    <div class="menu-left">
+                        <ul class="menu vertical">
+                            {% for categorie in categorielijst %}
+                                <li><a href="/product/lijst/cat/{{ categorie.catnr }}" >{{ categorie.categorie|upper }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                 </div>
-
-            </div>
             <div class="small-12 medium-9 column">
                 <h2>Producten</h2>
-                <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                    ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                    laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-                    voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-                    non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-                </p>
+                <table>
+                    <tr>
+                        <th>Product</th>
+                        <th>Prijs</th>
+                    </tr>
+                    {% for product in producten %}
+                        <tr>
+                            <td>{{ product.product_naam }}</td>
+                            <td>{{product.eenheidsprijs}}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
             </div>
         </div>
     </section>
