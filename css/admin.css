@@ -69,3 +69,6 @@ table.unstriped tbody tr{
     background-color: inherit;
     border: 1px solid black;
 }
+.unstriped a{
+    color:black;
+}

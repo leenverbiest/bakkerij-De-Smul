@@ -44,12 +44,7 @@ class KlantController extends Controller
         if (Session::get('email') && !empty(Session::get('email'))) {
             Router::redirect('/klant/klantpagina/');
         }
-        $params = App::getRouter()->getParams();
 
-        if (isset($params[0])) {
-            $this->data['klant'] = "Leen Verbiest";
-
-        }
     }
     public function login()
     {
@@ -88,7 +83,10 @@ class KlantController extends Controller
                             Router::redirect('/klant/admin_index/');
                             break;
                     }
-                } else {
+                } elseif($klant && $status==2 && $juistewachtwoord && $rechten) {
+                    $this->data['fout'] = 'De toegang werd u geweigerd. Indien u terug toegang wenst, gelieve
+                                            ons te contacteren';
+                }else{
                     $this->data['fout'] = 'foutief wachtwoord';
                 }
             }
@@ -183,15 +181,17 @@ class KlantController extends Controller
         $this->data['voornaam']=Session::get('voornaam');
         $this->data['naam']=Session::get('naam');
     }
+
+    //ADMINISTRATOR
     public function klantenlijst()
     {
-        $params=App::getRouter()->getParams();
-        if (isset($params[0])){
-            $this->data['klanten']=$this->model->getAll();
-
+        if (Session::get('rechten')=="admin"){
+            $this->data['site_titel']=Config::get('site_name');
+        }else{
+            Router::redirect('/klant/login/');
         }
+        $this->data['klanten']=$this->model->getAll();
     }
-    //ADMINISTRATOR
     public function admin_index(){
         if (Session::get('rechten')=="admin"){
             $this->data['site_titel']=Config::get('site_name');
@@ -202,6 +202,98 @@ class KlantController extends Controller
     public function admin_afmelden(){
         Session::destroy();
         Router::redirect('/klant/login/');
+    }
+    public function admin_edit()
+    {
+        if (Session::get('rechten') == "admin") {
+            $this->data['site_titel'] = Config::get('site_name');
+        } else {
+            Router::redirect('/klant/login/');
+        }
+        $params = App::getRouter()->getParams();
+        if (isset($params[0])) {
+            $id = $params[0];
+            $klant = $this->model->getById($id);
+            $this->data['klantgegevens']=$klant;
+
+            if (isset($_POST) && !empty($_POST)) {
+                Session::set('voornaam',$_POST["txtVoornaam"]);
+                Session::set('naam',$_POST ["txtNaam"]);
+                Session::set('straat', $_POST["txtStraat"]);
+                Session::set('postcode',$_POST['txtPostcode']);
+                Session::set('gemeente',$_POST['txtGemeente']);
+                Session::set('email',$_POST['txtEmail']);
+                Session::set('status',$_POST['txtStatus']);
+
+                //valideer input en pass it to de ValidatorController
+//                $errorHandler=new Errorhandler();
+//                $validator=new Validator($errorHandler);
+//                $validation=$validator->check($_POST,[
+//                    'voornaam' => [
+//                        'verplicht' => true,
+//                        'tekst' => true
+//                    ],
+//                    'naam' => [
+//                        'verplicht' => true,
+//                        'tekst' => true
+//                    ],
+//                    'straat' => [
+//                        'verplicht' => true
+//                    ],
+//                    'postcode'=>[
+//                        'verplicht'=>true,
+//                        'lengte'=>4
+//                    ],
+//                    'gemeente' => [
+//                        'verplicht' => true,
+//                        'gemeente'=>true
+//                    ],
+//                    'email' => [
+//                        'verplicht' => true,
+//                        'email' => true
+//                    ]
+//                ]);
+//                if($validation->fails()) {
+//                    $params = App::getRouter()->getParams();
+//                    $this->data['foutVoornaam'] = $validation->errors()->first('voornaam');
+//                    $this->data['foutNaam'] = $validation->errors()->first('naam');
+//                    $this->data['foutStraat'] = $validation->errors()->first('straat');
+//                    $this->data['foutPostcode'] = $validation->errors()->first('postcode');
+//                    $this->data['foutGemeente'] = $validation->errors()->first('gemeente');
+//                    $this->data['foutEmail'] = $validation->errors()->first('email');
+//                }
+                if(Session::get('voornaam')==true ?$bvoornaam=Session::get('voornaam'):$bvoornaam=$klant->getVoornaam());
+                $bnaam=Session::get('naam')?Session::get('naam'):$klant->getNaam();
+                $bstraat=Session::get('straat')?Session::get('straat'):$klant->getStraat();
+                $bpostcode=Session::get('postcode')?Session::get('postcode'):$klant->getPostcode();
+                $bgemeente=Session::get('gemeente')?Session::get('gemeente'):$klant->getGemeente();
+                $bemail=Session::get('email')?Session::get('email'):$klant->getEmail();
+                $bstatus=Session::get('status')?Session::get('status'):$klant->getStatus();
+
+
+//                print $id;
+//                print $bvoornaam;
+//                print $bnaam;
+//                print $bstraat;
+//                print $bpostcode;
+//                print $bgemeente;
+//                print $bemail;
+//
+//                print $bstatus;
+//                print $rechten;
+                $this->model->update($id,$bvoornaam,$bnaam,$bstraat,$bpostcode,$bgemeente,$bemail,
+                                     $bstatus);
+                Router::redirect('/klant/klantenlijst/');
+
+            }
+        }
+    }
+    public function admin_add(){
+        if (Session::get('rechten')=="admin"){
+            $this->data['site_titel']=Config::get('site_name');
+        }else{
+            Router::redirect('/klant/login/');
+        }
     }
 
 

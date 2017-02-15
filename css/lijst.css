@@ -3,6 +3,35 @@
 /* ****************************************************************************
 CATEGORIEËN
  ***************************************************************************** */
+.menucat{
+    list-style-type: none;
+
+    margin: 0 auto;
+}
+.menucat>li{
+
+}
+.menucat>li>a {
+    background-color: white;
+    color:black;
+    display: block;
+    padding:.7rem 1rem;
+}
+.menucat>li>a:hover{
+    background-color:burlywood;
+}
+.menucat>li>button>a{
+    color:rgba(255,255,255,0.8);
+}
+.success{
+    background-color: blue;
+}
+
+
+
+/* ******************************************************************************
+PRODUCTEN
+******************************************************************************** */
 /* ******************************************************************************
 PRODUCTEN
 ******************************************************************************** */
@@ -26,6 +55,7 @@ table.unstriped tbody tr{
     background-color: inherit;
     border: 1px solid black;
 }
-table.unstriped tbody tr a {
+table>tbody>tr>td>a{
     color:black;
 }
+

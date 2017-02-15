@@ -33,10 +33,20 @@ class ProductController extends Controller{
 
     //ADMINISTRATOR
     public function admin_index(){
+        if (Session::get('rechten')=="admin"){
+            $this->data['site_titel']=Config::get('site_name');
+        }else{
+            Router::redirect('/klant/login/');
+        }
         $this->data['site_titel']=Config::get('site_name');
     }
     public function admin_producten()
     {
+        if (Session::get('rechten')=="admin"){
+            $this->data['site_titel']=Config::get('site_name');
+        }else{
+            Router::redirect('/klant/login/');
+        }
         $catmodel=new CategorieModel();
         $this->data['categorielijst']=$catmodel->getAll(); //array van CATEGORIE/objecten
         $this->data['site_titel']=Config::get('site_name');
@@ -49,13 +59,22 @@ class ProductController extends Controller{
 //        $this->data['producten']=$this->model->getAll();
     }
     public function admin_categorie(){
+        if (Session::get('rechten')=="admin"){
+            $this->data['site_titel']=Config::get('site_name');
+        }else{
+            Router::redirect('/klant/login/');
+        }
         $catmodel=new CategorieModel();
         $this->data['categorielijst']=$catmodel->getAll(); //array van CATEGORIE/objecten
-        $this->data['site_titel']=Config::get('site_name');
+
     }
     public function admin_edit()
     {
-        $this->data['site_titel']=Config::get('site_name');
+        if (Session::get('rechten')=="admin"){
+            $this->data['site_titel']=Config::get('site_name');
+        }else{
+            Router::redirect('/klant/login/');
+        }
         $params = App::getRouter()->getParams();
         if (isset($params[0])) {
             $id = $params[0];
@@ -81,6 +100,11 @@ class ProductController extends Controller{
     }
     public function admin_delete()
     {
+        if (Session::get('rechten')=="admin"){
+            $this->data['site_titel']=Config::get('site_name');
+        }else{
+            Router::redirect('/klant/login/');
+        }
         $params=App::getRouter()->getParams();
         if (isset($params[0])) {
             $id=$params[0];
@@ -90,7 +114,11 @@ class ProductController extends Controller{
     }
     public function admin_add()
     {
-        $this->data['site_titel']=Config::get('site_name');
+        if (Session::get('rechten')=="admin"){
+            $this->data['site_titel']=Config::get('site_name');
+        }else{
+            Router::redirect('/klant/login/');
+        }
         $catmodel=new CategorieModel();
         $this->data['categorielijst']=$catmodel->getAll(); //array van CATEGORIE/objecten
 
