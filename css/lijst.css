@@ -26,6 +26,6 @@ table.unstriped tbody tr{
     background-color: inherit;
     border: 1px solid black;
 }
- a {
+table.unstriped tbody tr a {
     color:black;
 }
