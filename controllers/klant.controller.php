@@ -197,9 +197,7 @@ class KlantController extends Controller
         }
     }
     public function klantpagina(){
-//        $params=App::getRouter()->getParams();
-//        $this->data['voornaam']=Session::get('voornaam');
-//        $this->data['naam']=Session::get('naam');
+
         if (Session::get('rechten') == "klant" && Session::get('status')==1) {
             $this->data['site_titel']=Config::get('site_name');
             $this->data['voornaam']=Session::get('voornaam');
@@ -222,6 +220,10 @@ class KlantController extends Controller
             $this->data['categorie'] = $categorie;
             $this->data['categorielijst'] = $catmodel->getAll(); //array van CATEGORIE/objecten
         }
+        if (Session::get('teller')&& !empty('teller')){
+            $this->data['teller']=Session::get('teller');
+        }
+        $teller=0;
         if (isset($_POST) && !empty($_POST)) {
             //lees aantal en productnr
             $aantal = $_POST['aantal'];
@@ -243,18 +245,34 @@ class KlantController extends Controller
             $wmProduct->aantal=$aantal;
             $wmProduct->prijs=$prijs;
             $wmProduct->totaal=$prijslijn;
-
+//            print $productnr;
             if (Session::get('winkelmandje')){
                 $winkelmandje=Session::get('winkelmandje');
             }else{
                 $winkelmandje=array();
             }
-            $teller=count($winkelmandje)+1;
-            array_push($winkelmandje,$wmProduct);
-            $this->data['teller']=$teller;
-            print_r($winkelmandje);
-            //
-            Session::set('winkelmandje',$winkelmandje);
+            $found=false;
+            foreach ($winkelmandje as $rij){
+//                print_r($mandje->productnr);
+                if ($rij->productnr==$productnr){
+                    $rij->aantal=$rij->aantal+$aantal;
+                    $teller=$teller+$rij->aantal;
+                    $found=true;
+                    break;
+//                    Session::set('winkelmandje',$winkelmandje);
+                }
+            }
+//            $teller=count($winkelmandje)+1;  //toont het altijd artikelen in het winkelmandje
+            if($found===false){
+
+//            print_r(Session::get('winkelmandje'));
+
+                $teller=$teller+$aantal;
+                Session::set('teller',$teller);
+                array_push($winkelmandje,$wmProduct);
+
+
+            }
 
 
 
