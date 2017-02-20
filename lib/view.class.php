@@ -53,7 +53,8 @@ class View{
         {
             Twig_Autoloader::register();
             $loader=new Twig_Loader_Filesystem(array(ROOT.DS.'views',ROOT.DS.'views'.DS.'klant',
-                                                ROOT.DS.'views'.DS.'product',ROOT.DS.'views'.DS.'categorie'));
+                                                ROOT.DS.'views'.DS.'product',ROOT.DS.'views'.DS.'categorie',
+                                                ROOT.DS.'views'.DS.'bestelling',ROOT.DS.'views'.DS.'bestellijn'));
             $twig=new Twig_Environment($loader);
             $view=$twig->render($twig_name,$data);
             print $view;

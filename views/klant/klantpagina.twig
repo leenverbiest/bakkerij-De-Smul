@@ -1,17 +1,26 @@
 {% extends 'basis.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="../../css/lijst.css">
 
+{% endblock stylesheets %}
 {% block topnavigatie %}
     <header>
-    <div class="container">
+        <div class="container">
+
+    {#<div class="container">#}
     <div class="top-bar">
         <div class="top-bar-left">
             <ul class="menu">
                 <li class="welkom">Welkom {{voornaam}} {{naam}} ,</li>
+                <li><a href="/klant/home/">Home</a></li>
                 <li><a href="#">Account</a></li>
                 <li><a href="#">Bestellingen</a></li>
-                <li><a href="#">Winkelmandje</a></li>  <!--enkel toegankelijk voor de beheerders van de bakkerij-->
-            </ul>
+                <li><a href="/bestellijn/winkelmandje/"><span>{{ teller }}</span>
+                      <span><i class="fa fa-shopping-cart"></i></span>
+                    </a></li>
+             </ul>
         </div>
         <div class="top-bar-right">
             <ul class="menu">
@@ -24,26 +33,56 @@
 {% endblock topnavigatie %}
 {% block content %}
     <section class="content">
-        <div class="wrapper row">
-            <div class="small-12 medium-7 column">
-                <h2>Bakkerij De Smul</h2>
-                <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                    ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                    laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-                    voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-                    non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-                </p>
-            </div>
-            <div class="small-12 medium-5 column">
-                <h2>Producten</h2>
-                <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                    ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                    laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-                    voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-                    non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-                </p>
+        <div class="expanded row">
+            <div class="small-12 medium-12 column">
+                Bestel minstens 1 dag vooraf! Bestellen mogelijk maximum 3 dagen vooraf!
             </div>
         </div>
+
+            <div class="wrapper row">
+                <div class="small-6 medium-2 column">
+                    <ul class="menucat ">
+
+                        {% for categorie in categorielijst %}
+                            <li><a href="{{ categorie.categorie }}">{{ categorie.categorie|upper }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="small-6 medium-10 column">
+
+
+
+                        <table class="table unstriped">
+                            <th><h4>Producten</h4></th>
+                            <tr>
+                                <td>Product</td>
+                                <td>Prijs</td>
+                                <td>Aantal</td>
+                            </tr>
+                            {% for product in producten %}
+                                <tr>
+                                    <td hidden>{{ product.productnr }}</td>
+                                    <td>{{ product.productnaam }}</td>
+                                    <td>{{ product.eenheidsprijs }}</td>
+                                    <td><form action="{{ categorie.categorie }}"method="post">
+
+                                        <input type="number" name="aantal"  placeholder="aantal" value="{{ aantal }}">
+                                            <input type="hidden" name="productnr"  value="{{ product.productnr }}">
+
+
+                                            <input type="submit" value="Bestel">
+
+
+                                        </form>
+                                    </td>
+
+                                </tr>
+                            {% endfor %}
+                        </table>
+
+                </div>
+            </div>
+
     </section>
 {% endblock content %}
 

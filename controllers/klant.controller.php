@@ -7,6 +7,8 @@
  */
 require_once (ROOT.DS.'lib'.DS.'session.class.php');
 require_once (ROOT.DS.'entities'.DS.'Klant.php');
+require_once (ROOT.DS.'models'.DS.'Product.model.php');
+require_once (ROOT.DS.'models'.DS.'Categorie.model.php');
 require_once (ROOT.DS.'entities'.DS.'Validator.php');
 require_once (ROOT.DS.'entities'.DS.'ErrorHandler.php');
 
@@ -39,6 +41,7 @@ class KlantController extends Controller
         }
         $this->data['bedrijf'] = 'Bakkerij De Smul';
     }
+
     public function home()
     {
         if (Session::get('email') && !empty(Session::get('email'))) {
@@ -46,6 +49,23 @@ class KlantController extends Controller
         }
 
     }
+//    public function productenklant(){
+//        if (Session::get('rechten') == "klant" && Session::get('status')==1) {
+//            $this->data['site_titel']=Config::get('site_name');
+//            $this->data['voornaam']=Session::get('voornaam');
+//            $this->data['naam']=Session::get('naam');
+//        }else {
+//            Router::redirect('/klant/login/');
+//        }
+//        $catmodel=new CategorieModel();
+//        $productmodel=new ProductModel();
+//        $this->data['categorielijst']=$catmodel->getAll(); //array van CATEGORIE/objecten
+//        $params=App::getRouter()->getParams();
+//        if (isset($params[0])){
+//            $categorie=$params[0];
+//            $this->data['producten']=$productmodel->getProductByCategorie($categorie);
+//        }
+//    }
     public function login()
     {
         if (Session::get('email') && !empty(Session::get('email')&& Session::get('rechten')&& !empty(Session::get('rechten')))) {
@@ -69,7 +89,7 @@ class KlantController extends Controller
                 $status = $klant->getStatus();
                 $rechten=$klant->getRechten();
                 $juistewachtwoord = password_verify($wachtwoord, $dbwachtwoord);
-
+                Session::set('status',$status);
                 if ($klant && $status == 1 && $juistewachtwoord && $rechten) {
                     Session::set('email', $klant->getEmail());
                     Session::set('voornaam', $klant->getVoornaam());
@@ -177,10 +197,74 @@ class KlantController extends Controller
         }
     }
     public function klantpagina(){
+//        $params=App::getRouter()->getParams();
+//        $this->data['voornaam']=Session::get('voornaam');
+//        $this->data['naam']=Session::get('naam');
+        if (Session::get('rechten') == "klant" && Session::get('status')==1) {
+            $this->data['site_titel']=Config::get('site_name');
+            $this->data['voornaam']=Session::get('voornaam');
+            $this->data['naam']=Session::get('naam');
+        }else {
+            Router::redirect('/klant/login/');
+        }
+        $catmodel=new CategorieModel();
+        $productmodel=new ProductModel();
         $params=App::getRouter()->getParams();
-        $this->data['voornaam']=Session::get('voornaam');
-        $this->data['naam']=Session::get('naam');
+        if (isset($params[0])) {
+            $categorie = $params[0];
+            $this->data['producten'] = $productmodel->getProductByCategorie($categorie);
+            $this->data['categorie'] = $categorie;
+            $this->data['categorielijst'] = $catmodel->getAll(); //array van CATEGORIE/objecten
+
+        }if (!isset($params[0])){
+            $categorie='brood';
+            $this->data['producten'] = $productmodel->getProductByCategorie($categorie);
+            $this->data['categorie'] = $categorie;
+            $this->data['categorielijst'] = $catmodel->getAll(); //array van CATEGORIE/objecten
+        }
+        if (isset($_POST) && !empty($_POST)) {
+            //lees aantal en productnr
+            $aantal = $_POST['aantal'];
+            $productnr = $_POST['productnr'];
+            //haal het betreffende product op aan de hand van het productnr
+            $product=$productmodel->getById($productnr); // OBJECT
+            //haal de eenheidsprijs op
+            $prijs=$product->getEenheidsprijs();
+            //haal de productnaam op
+            $naam=$product->getProductnaam();
+            //haal het klantnr op
+            $klantnr=$this->model->getIdByEmail(Session::get('email'));
+            //bepaal de prijs voor de desbetreffende bestellijn
+            $prijslijn=$aantal*$prijs;
+            //winkelmandje product
+            $wmProduct=new stdClass();
+            $wmProduct->productnr=$productnr;
+            $wmProduct->naam=$naam;
+            $wmProduct->aantal=$aantal;
+            $wmProduct->prijs=$prijs;
+            $wmProduct->totaal=$prijslijn;
+
+            if (Session::get('winkelmandje')){
+                $winkelmandje=Session::get('winkelmandje');
+            }else{
+                $winkelmandje=array();
+            }
+            $teller=count($winkelmandje)+1;
+            array_push($winkelmandje,$wmProduct);
+            $this->data['teller']=$teller;
+            print_r($winkelmandje);
+            //
+            Session::set('winkelmandje',$winkelmandje);
+
+
+
+        }
+
+
     }
+
+
+
 
     //ADMINISTRATOR
     public function klantenlijst()

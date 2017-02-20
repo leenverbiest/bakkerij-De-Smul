@@ -1,0 +1,31 @@
+{% extends 'klant/basis.twig' %}
+
+{% block content %}
+    <section class="content">
+
+        <div class="wrapper row">
+
+                <table class="table">
+                    <th><h4>Mijn bestelling</h4></th>
+
+                    {% for wm in winkelmandje %}
+                        <tr id="{{ wm.productnr }}">
+                            <td>{{ wm.naam}}</td>
+                            <td>X</td>
+                            <td>{{ wm.aantal }}</td>
+                            <td>{{ wm.prijs}}</td>
+                            <td>=</td>
+                            <td>{{ wm.totaal }} €</td>
+                            <td>
+                                <a href="/bestellijn/delete/{{ wm.productnr }}"><button class="button warning">delete</button></a>
+                            </td>
+
+                        </tr>
+                    {% endfor %}
+                </table>
+
+            </div>
+        </div>
+
+    </section>
+{% endblock content %}

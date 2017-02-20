@@ -58,4 +58,7 @@ table.unstriped tbody tr{
 table>tbody>tr>td>a{
     color:black;
 }
+{
+    display:none;
+}
 

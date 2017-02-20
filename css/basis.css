@@ -109,6 +109,11 @@ CONTENT SECTION
     padding: 1em;
     min-height: 500px;
 }
+.expanded>div{
+    background-color: burlywood;
+    color:rgba(255,255,255,0.8);
+    text-align: center;
+}
 
 /********************************************************************
 FOOTER SECTION
