@@ -24,14 +24,16 @@ class BestellingController extends Controller{
     }
 
     public function bestelling(){
-
-    }
-    public function winkelmandje(){
-      $this->data['winkelmandje']=Session::get('winkelmandje');
-
-
-
+        $winkelmandje=Session::get('winkelmandje');
+        $this->data['winkelmandje']=$winkelmandje;
+        $wmTotaal=0;
+        foreach ($winkelmandje as $rij){
+            $wmTotaal+=$rij->totaal;
         }
+        $this->data['wmTotaal']=$wmTotaal;
+    }
+
+
 
 
 

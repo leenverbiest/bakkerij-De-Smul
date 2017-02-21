@@ -1,5 +1,21 @@
 {% extends 'klant/basis.twig' %}
 
+{% block topnavigatie %}
+    <header>
+        <div class="top-bar">
+            <div class="wrapper">
+                <div class="top-bar-left">
+                    <h3>Bakkerij De Smul</h3>
+                </div>
+                <div class="top-bar-right">
+                    <ul class="menu">
+                        <li><a href="/klant/klantpagina/">Overzicht</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header> {# einde header #}
+{% endblock topnavigatie %}
 {% block content %}
     <section class="content">
 
@@ -24,6 +40,21 @@
                     {% endfor %}
                 </table>
 
+            </div>
+        </div>
+        <div class="wrapper row">
+            <div class="small-6 medium-7 column">
+
+            </div>
+            <div class="small-6 medium-5 column">
+            <label for="wmTotaal">Totaal:
+                <input type="text" name="wmTotaal" value="{{ wmTotaal }} €">
+            </label>
+            </div>
+        </div>
+        <div class="wrapper row">
+            <div class="small-12 medium-12 column">
+            <button class="button success"><a href="/bestelling/bestelling/">Bestellen</a></button>
             </div>
         </div>
 

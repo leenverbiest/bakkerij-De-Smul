@@ -1,0 +1,34 @@
+{% extends 'klant/klantpagina.twig' %}
+
+{% block content %}
+<section class="content">
+
+    <div class="wrapper row">
+    <div class="small-12 medium-6">
+        <table class="table">
+            <th><h4>Mijn bestelling</h4></th>
+
+            {% for wm in winkelmandje %}
+                <tr id="{{ wm.productnr }}">
+                    <td>{{ wm.aantal }}</td>
+                    <td>{{ wm.naam}}</td>
+                    <td>X</td>
+                    <td>{{ wm.prijs}}</td>
+                    <td>=</td>
+                    <td>{{ wm.totaal }} €</td>
+                </tr>
+            {% endfor %}
+        </table>
+        <label for="wmTotaal">Totaal:
+            <input type="text" name="wmTotaal" value="{{ wmTotaal }} €">
+        </label>
+    </div>
+
+        <div class="small-6 medium-6 column">
+            <label for="dtmBestel">Afhaaldatum</label>
+            <input type="text" id="datepicker"></p>
+        </div>
+
+    </div>
+</section>
+{% endblock content %}

@@ -23,14 +23,14 @@ class BestellijnController extends Controller{
         $this->model=new BestellijnModel();
     }
 
-    public function bestellijn(){
-
-    }
-
-        public function winkelmandje(){
-            $this->data['winkelmandje']=Session::get('winkelmandje');
-
-
+    public function winkelmandje(){
+            $winkelmandje=Session::get('winkelmandje');
+            $this->data['winkelmandje']=$winkelmandje;
+            $wmTotaal=0;
+            foreach ($winkelmandje as $rij){
+                $wmTotaal+=$rij->totaal;
+            }
+            $this->data['wmTotaal']=$wmTotaal;
         }
     public function delete()
     {

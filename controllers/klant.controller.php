@@ -220,10 +220,12 @@ class KlantController extends Controller
             $this->data['categorie'] = $categorie;
             $this->data['categorielijst'] = $catmodel->getAll(); //array van CATEGORIE/objecten
         }
-        if (Session::get('teller')&& !empty('teller')){
+        if (Session::get('winkelmandje')&& !empty('winkelmandje')){
             $this->data['teller']=Session::get('teller');
         }
-        $teller=0;
+        $teller=count(Session::get('winkelmandje'));  //toont het altijd artikelen in het winkelmandje
+        $this->data['teller']=$teller;
+
         if (isset($_POST) && !empty($_POST)) {
             //lees aantal en productnr
             $aantal = $_POST['aantal'];
@@ -251,34 +253,29 @@ class KlantController extends Controller
             }else{
                 $winkelmandje=array();
             }
+            //we overlopen of het product reeds opgenomen is in het winkelmandje
             $found=false;
             foreach ($winkelmandje as $rij){
-//                print_r($mandje->productnr);
+                //indien JA , wijzigen we het aantal
                 if ($rij->productnr==$productnr){
                     $rij->aantal=$rij->aantal+$aantal;
-                    $teller=$teller+$rij->aantal;
                     $found=true;
+                    Session::set('winkelmandje',$winkelmandje);
+                    $teller=count(Session::get('winkelmandje'));
+                    $this->data['teller']=$teller;
                     break;
-//                    Session::set('winkelmandje',$winkelmandje);
                 }
             }
-//            $teller=count($winkelmandje)+1;  //toont het altijd artikelen in het winkelmandje
+
             if($found===false){
 
-//            print_r(Session::get('winkelmandje'));
-
-                $teller=$teller+$aantal;
-                Session::set('teller',$teller);
                 array_push($winkelmandje,$wmProduct);
-
-
+                Session::set('winkelmandje',$winkelmandje);
+                $teller=count(Session::get('winkelmandje'));
+                $this->data['teller']=$teller;
             }
 
-
-
         }
-
-
     }
 
 
