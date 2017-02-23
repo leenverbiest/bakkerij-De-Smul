@@ -23,17 +23,19 @@
             <input type="text" name="wmTotaal" value="{{ wmTotaal }} €">
         </label>
         <button class="button primary">
-            <a href="/klant/klantpagina/">Nog iets vergeten of iets wijzigen?</a>
+            <a href="/bestellijn/winkelmandje/">Nog iets vergeten of iets wijzigen?</a>
         </button>
     </div>
 
         <div class="small-6 medium-6 column">
             <h4>Bijkomende gegevens:</h4>
-            <label for="dtmBestel">Kies een afhaaldatum.</label>
-            <input type="text" id="afhaaldatum"></p>
-            <button class="button primary">
-                <a href="/bestelling/bevestiging/">Bestellen/Betalen</a>
+            <form action="/bestelling/bestelling/" method="post">
+            <label for="afhaaldatum">Kies een afhaaldatum.</label>
+            <input type="text" id="afhaaldatum" name="afhaaldatum"></p>
+            <button type='submit' class="button primary">
+               Bestellen/Betalen
             </button>
+            </form>
         </div>
 
     </div>

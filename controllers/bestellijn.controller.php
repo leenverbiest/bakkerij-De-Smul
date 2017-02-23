@@ -32,6 +32,37 @@ class BestellijnController extends Controller{
             }
             $this->data['wmTotaal']=$wmTotaal;
         }
+    public function wijzig()
+    {
+        if (Session::get('rechten') == "klant") {
+
+        } else {
+            Router::redirect('/klant/login/');
+        }
+        $params = App::getRouter()->getParams();
+        if (isset($params[0])) {
+            $productnr = $this->params[0];
+            $vorigWinkelmandje = Session::get('winkelmandje');
+            $arrWinkelmandje = array_filter(
+                $vorigWinkelmandje, function ($e) use (&$productnr) {
+                return $e->productnr == $productnr;
+            });
+//            print_r($arrWinkelmandje);
+            $this->data['product'] = $arrWinkelmandje;
+            $key=key($arrWinkelmandje);
+
+            if (isset($_POST) && !empty($_POST)) {
+                //lees aantal
+                $aantal = $_POST['aantal'];
+                $prijs=$arrWinkelmandje[$key]->prijs; //haal eenheidsprijs op
+                $arrWinkelmandje[$key]->aantal=$aantal;
+             $arrWinkelmandje[$key]->totaal=$aantal*$prijs;
+            }
+
+        }
+
+    }
+//
     public function delete()
     {
         if (Session::get('rechten')=="klant"){

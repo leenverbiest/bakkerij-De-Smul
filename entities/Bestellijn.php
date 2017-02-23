@@ -10,7 +10,6 @@ class Bestellijn
 {
     private static $idMap=array();  //array van array =>samengestelde sleutel bestelnr,lijnnr
 
-    private $lijnnr;
     private $bestelnr;
     private $productnr;
     private $bestel_aantal;
@@ -22,31 +21,29 @@ class Bestellijn
      * @param $productnr
      * @param $bestel_aantal
      */
-    private function __construct($lijnnr, $bestelnr, $productnr, $bestel_aantal)
+    private function __construct($bestelnr, $productnr, $bestel_aantal)
     {
-        $this->lijnnr = $lijnnr;
         $this->bestelnr = $bestelnr;
         $this->productnr = $productnr;
         $this->bestel_aantal = $bestel_aantal;
     }
-    public static function create($lijnnr, $bestelnr, $productnr, $bestel_aantal)
+    public static function create($bestelnr, $productnr, $bestel_aantal)
     {
-        if (!isset(self::$idMap[$bestelnr][$lijnnr])){
-            self::$idMap[$bestelnr][$lijnnr]=new Bestellijn($lijnnr, $bestelnr, $productnr, $bestel_aantal);
+        if (!isset(self::$idMap[$bestelnr][$productnr])){
+            self::$idMap[$bestelnr][$productnr]=new Bestellijn($bestelnr, $productnr, $bestel_aantal);
         }
-        return self::$idMap[$bestelnr][$lijnnr];
+        return self::$idMap[$bestelnr][$productnr];
     }
 
     //GETTERS
-    public function getLijnnr(){return $this->lijnnr;}
     public function getBestelnr(){return $this->bestelnr;}
     public function getProductnr(){return $this->productnr;}
     public function getBestelAantal(){return $this->bestel_aantal;}
 
     //SETTERS
-    public function setLijnnr($lijnnr){$this->lijnnr = $lijnnr;}
     public function setBestelnr($bestelnr){$this->bestelnr = $bestelnr;}
     public function setProductnr($productnr){$this->productnr = $productnr;}
+    public function setBestelAantal($bestel_aantal){$this->bestel_aantal = $bestel_aantal;}
 
 
 

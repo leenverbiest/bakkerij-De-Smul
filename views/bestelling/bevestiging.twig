@@ -1,0 +1,41 @@
+{% extends 'klant/klantpagina.twig' %}
+
+{% block content %}
+    <div class="wrapper row">
+        <div class="small-12 medium-12 column">
+    <p>Uw bestelling werd opgenomen!</p>
+    <p>
+        Onderstaand vindt u een overzicht van de zonet geplaatste bestelling. <br>
+        U kunt deze bestelling steeds raadplegen op uw klantpagina onder Bestellingen.
+    </p>
+        </div>
+    </div>
+    <div class="wrapper row">
+        <div class="small-12 medium-12 column">
+            <table class="table">
+                <th><h4>Mijn bestelling</h4></th>
+
+                {% for rij in bestelling %}
+                    <tr id="{{ rij.productnr }}">
+                        <td>{{ rij.aantal }}</td>
+                        <td>{{ rij.naam}}</td>
+                        <td>X</td>
+                        <td>{{ rij.prijs}}</td>
+                        <td>=</td>
+                        <td>{{ rij.totaal }} €</td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <label for="wmTotaal">Totaal:
+                <input type="text" name="wmTotaal" value="{{ totaal }} €">
+            </label>
+
+        </div>
+        </div>
+    <div class="wrapper row">
+        <div class="small-6 medium-12 column">
+            <h4>Uw kunt uw bestelling ophalen op {{ afhaaldatum }}</h4>
+        </div>
+    </div>
+    </section>
+{% endblock content %}

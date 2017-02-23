@@ -9,6 +9,7 @@ require_once (ROOT.DS.'lib'.DS.'session.class.php');
 require_once (ROOT.DS.'entities'.DS.'Klant.php');
 require_once (ROOT.DS.'models'.DS.'Product.model.php');
 require_once (ROOT.DS.'models'.DS.'Categorie.model.php');
+require_once (ROOT.DS.'models'.DS.'Bestelling.model.php');
 require_once (ROOT.DS.'entities'.DS.'Validator.php');
 require_once (ROOT.DS.'entities'.DS.'ErrorHandler.php');
 
@@ -277,6 +278,33 @@ class KlantController extends Controller
             }
 
         }
+    }
+    public function bestellingen()
+    {
+        if (Session::get('rechten') == "klant" && Session::get('status')==1) {
+            $this->data['site_titel']=Config::get('site_name');
+            $this->data['voornaam']=Session::get('voornaam');
+            $this->data['naam']=Session::get('naam');
+        }else {
+            Router::redirect('/klant/login/');
+        }
+        $bestelmodel=new BestellingModel();
+        $klantnr=$this->model->getIdByEmail(Session::get('email'));
+        $bestellingen=$bestelmodel->getByKlantnr($klantnr); //object
+        $this->data['bestellingen']=$bestellingen;
+
+    }
+    public function account()
+    {
+        if (Session::get('rechten') == "klant" && Session::get('status')==1) {
+            $this->data['site_titel']=Config::get('site_name');
+            $this->data['voornaam']=Session::get('voornaam');
+            $this->data['naam']=Session::get('naam');
+        }else {
+            Router::redirect('/klant/login/');
+        }
+        $klantgegevens=$this->model->getByEmail(Session::get('email'));
+        $this->data['klant']=$klantgegevens;
     }
 
 

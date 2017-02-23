@@ -1,0 +1,37 @@
+{% extends 'klant/klantpagina.twig' %}
+
+{% block content %}
+    <section class="content">
+        <div class="wrapper row">
+            <div class="small-6 medium-10 column">
+                <table class="table unstriped">
+                    <th><h4>Producten</h4></th>
+                    <tr>
+                        <td>Product</td>
+                        <td>Prijs</td>
+                        <td>Aantal</td>
+                    </tr>
+                    {% for veld in product %}
+                        <tr>
+                            <td>{{ veld.naam }}</td>
+                            <td>{{ veld.prijs }}</td>
+                            <td><form action="{{ veld.productnr}}"method="post">
+                                    <input type="number" name="aantal"  placeholder="aantal" value="{{ aantal }}">
+                                    <input type="submit" value="Bestel">
+                                </form>
+                            </td>
+
+                        </tr>
+                    {% endfor %}
+                </table>
+
+            </div>
+        </div>
+        <div class="wrapper row">
+            <div class="small-12 medium-12 column">
+                <button class="button primary"><a href="/bestellijn/winkelmandje/">Terug naar winkelmandje</a></button>
+            </div>
+        </div>
+
+    </section>
+{% endblock content %}

@@ -38,6 +38,29 @@ class BestellingModel extends Model{
         $dbh=null;
         return $bestelling;      //EESTEL-OBJECT
     }
+    public function getByKlantnr($klantnr)
+    {
+        $sql="select bestellingen.bestelnr,bestellingen.besteldatum,bestellingen.bestel_aantal,
+              bestellingen.afhaaldatum,bestellingen.status
+              from bestellingen INNER JOIN klanten
+              on bestellingen.klantnr=klanten.klantnr
+              WHERE bestellingen.klantnr=:klantnr";
+        $dbh = $this->db->getConnection();
+        $stmt = $dbh->prepare($sql);
+        $stmt->execute(array(':klantnr' => $klantnr));
+        $resultSet = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $lijst=[];
+        foreach ($resultSet as $rij){
+            $bestelling = Bestelling::create($rij['bestelnr'],$klantnr,$rij['besteldatum'], $rij['bestel_aantal'],
+                $rij['afhaaldatum'], $rij['status']);
+            array_push($lijst,$bestelling);
+        }
+
+        $dbh=null;
+        return $lijst;      //ARRAY VAN EESTEL-OBJECTEN
+
+
+    }
 
     //CREATE
     //voeg record toe aan de tabel bestelling
@@ -58,7 +81,7 @@ class BestellingModel extends Model{
         ));
         $bestelnr= $dbh->lastInsertId();
         $dbh = null;
-        $bestelling=Bestelling::create($klantnr,$besteldatum,$bestel_aantal,$afhaaldatum,$status);
+        $bestelling=Bestelling::create($bestelnr, $klantnr,$besteldatum,$bestel_aantal,$afhaaldatum,$status);
         return $bestelling;  //RETURN OBJECT BESTELLING
     }
 

@@ -1,0 +1,48 @@
+{% extends 'klantpagina.twig' %}
+
+{% block content %}
+<section>
+    <div class="wrapper row">
+    <div class="small-12 medium-12 column">
+
+
+
+        <table class="table unstriped">
+            <th><h4>Mijn bestellingen</h4></th>
+            <tr>
+                <td>Bestelnr</td>
+                <td>Besteldatum</td>
+                <td>Prijs</td>
+                <td>Af te halen</td>
+                <td>Status</td>
+            </tr>
+            {% for bestelling in bestellingen %}
+                <tr>
+                    <td>{{ bestelling.bestelnr}}</td>
+                    <td>{{ bestelling.besteldatum}}</td>
+                    <td>{{ bestelling.bestelaantal}}</td>
+                    <td>{{ bestelling.afhaaldatum }}</td>
+                    <td>{{ bestelling.status }}</td>
+                    <td>
+                        <button type="button" class="button primary">
+                            <a href="/bestelling/annuleer/{{ bestelling.bestelnr }}">Annuleer bestelling!</a>
+                        </button>
+                    </td>
+
+                </tr>
+            {% endfor %}
+        </table>
+
+    </div>
+    </div>
+    <div class="wrapper row">
+        <div class="small-12 medium-6 column">
+            <button type="button" class="button primary">
+                <a href="/klant/klantpagina/">Voeg bestelling toe!</a>
+            </button>
+        </div>
+
+    </div>
+</section>
+
+{% endblock content %}
