@@ -3,16 +3,21 @@
  */
 
 window.onload = function() {
-  // document dom elementen
+    // document dom elementen
     eWinkelmandje = document.getElementById('winkelmandje');
 
-    eWinkelmandje.addEventListener('click', function(e){
+    eWinkelmandje.addEventListener('click', function (e) {
         // e.preventDefault();
-    })
-    $( function() {
-        $( "#datepicker" ).datepicker();
-    } );
+    });
+    //we passen de datepicker widget toe op de ganse set
 
-};
+    $('#afhaaldatum').datepicker({
+        dateFormat: "dd-mm-yy",
+        minDate: "1",    //geen selectie de dag zelf
+        maxDate: "+3d", //max 3 dagen vooruit best kan de bestelling opgehaald worden
+        changeMonth: false,
+        changeYear: false
 
+    });
 
+}

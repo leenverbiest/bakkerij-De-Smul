@@ -192,6 +192,7 @@ class KlantController extends Controller
                Session::set('naam',$naam);
                Session::set('voornaam',$voornaam);
                Session::set('rechten',$rechten);
+               Session::set('status',$status);
 
             }
         }

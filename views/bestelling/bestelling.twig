@@ -4,7 +4,7 @@
 <section class="content">
 
     <div class="wrapper row">
-    <div class="small-12 medium-6">
+    <div class="small-12 medium-6 column">
         <table class="table">
             <th><h4>Mijn bestelling</h4></th>
 
@@ -22,11 +22,18 @@
         <label for="wmTotaal">Totaal:
             <input type="text" name="wmTotaal" value="{{ wmTotaal }} €">
         </label>
+        <button class="button primary">
+            <a href="/klant/klantpagina/">Nog iets vergeten of iets wijzigen?</a>
+        </button>
     </div>
 
         <div class="small-6 medium-6 column">
-            <label for="dtmBestel">Afhaaldatum</label>
-            <input type="text" id="datepicker"></p>
+            <h4>Bijkomende gegevens:</h4>
+            <label for="dtmBestel">Kies een afhaaldatum.</label>
+            <input type="text" id="afhaaldatum"></p>
+            <button class="button primary">
+                <a href="/bestelling/bevestiging/">Bestellen/Betalen</a>
+            </button>
         </div>
 
     </div>

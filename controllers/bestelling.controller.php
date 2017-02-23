@@ -32,6 +32,9 @@ class BestellingController extends Controller{
         }
         $this->data['wmTotaal']=$wmTotaal;
     }
+    public function bevestiging(){
+
+    }
 
 
 
